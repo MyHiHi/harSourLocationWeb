@@ -62,7 +62,6 @@
             console.log("database：", database)
             Init_server();
         } else {
-            alert("未连接数据库！");
             return;
         }
 
@@ -71,10 +70,8 @@
     function Connect_and_getData(DATA) {
         flag = true;
         if (!is_connect) {
-            alert("未连接数据库！");
             flag = false;
         } else if (!DATA || !DATA.length) {
-            alert("数据获取失败或获得的数据为空！");
             flag = false;
         }
         return flag;
