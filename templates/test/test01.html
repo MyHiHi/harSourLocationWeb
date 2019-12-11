@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content%}
+
+<div class="alert alert-danger">{{info.page_name}}</div>
+
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-header bg-light">
+            示例
+        </div>
+        <div class="card-body">
+            <div class="chartjs-size-monitor"
+                style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+                <div class="chartjs-size-monitor-expand"
+                    style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                    <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
+                </div>
+                <div class="chartjs-size-monitor-shrink"
+                    style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                    <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
+                </div>
+            </div>
+            <div id="line_charter" width="599" height="299" class="chartjs-render-monitor"
+                style="display: block; width: 599px; height: 299px;"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    chart_data = {
+        {
+            info.chart_data | safe
+        }
+    };
+    x = chart_data.x
+    y = chart_data.y
+    lineChart(x, y)
+
+    function lineChart(x, y) {
+        var line_chart = echarts.init(document.getElementById("line_charter"));
+        option = {
+            title: {
+                text: 'TEST'
+            },
+            xAxis: {
+                type: 'category',
+                data: x
+            },
+            legend: {
+                data: ['正太分布']
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            yAxis: {
+                type: 'value'
+            },
+            dataZoom: {
+                type: 'inside',
+                show: true, //显示滚动条
+            },
+            series: [{
+                data: y,
+                type: 'line',
+                symbol: 'none'
+            }]
+        };
+        line_chart.setOption(option);
+    }
+
+    
+</script>
+{% endblock %}

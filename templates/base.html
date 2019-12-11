@@ -1,0 +1,206 @@
+{% load static%}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{info.theme}}</title>
+    <link rel="stylesheet" href="{% static 'vendor/simple-line-icons/css/simple-line-icons.css'%}">
+    <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/fontawesome-all.min.css'%}">
+    <link rel="stylesheet" href="{% static 'css/styles.css'%}">
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/popper.js/popper.min.js'%}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js'%}"></script>
+    <script src="{% static 'vendor/echarts-all.js'%}"></script>
+    <script src="{% static 'js/carbon.js'%}"></script>
+    <script src="{% static 'js/jsplumb.min.js'%}"></script>
+    <script src="{% static 'js/jquerysession.js'%}"></script>
+
+</head>
+
+<body class="sidebar-fixed header-fixed">
+    <div class="">
+        <nav class="navbar page-header">
+            <a href="#" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
+                <i class="fa fa-bars"></i>
+            </a>
+
+            <a class="navbar-brand" href="#">
+                <strong>{{info.theme}}</strong>
+            </a>
+
+            <a href="#" class="btn btn-link sidebar-toggle d-md-down-none">
+                <i class="fa fa-bars"></i>
+            </a>
+            <ul class="navbar-nav ml-auto">
+
+                <span class="d-block font-weight-normal text-center " id="time"></span>
+
+                <button class="btn btn-rounded btn-primary" id="connect"></button>
+
+
+
+
+            </ul>
+
+        </nav>
+
+        <div class="main-container">
+            <div class="sidebar">
+                <nav class="sidebar-nav">
+                    <ul class="nav">
+                        <li class="nav-title">{{info.top}}</li>
+                        {% with index=info.Index %}
+                        <li class="nav-item">
+                            <a href="javascript:void(0);" onclick="setContent('{{index.url}}')" class="nav-link">
+                                {{index.name}}
+                            </a>
+                        </li>
+                        {% endwith %}
+
+                        <li class="nav-item nav-dropdown">
+                            <a href="#" class="nav-link nav-dropdown-toggle">
+                                {{ info.PHAR | safe}}
+                            </a>
+
+                            <ul class="nav-dropdown-items">
+
+                                {% for i in info.SourceL%}
+
+                                <li class="nav-item">
+                                    <a href="javascript:void(0);" onclick="setContent('{{i.url}}')" class="nav-link">
+                                        {{i.name}}
+                                    </a>
+                                </li>
+                                {% endfor%}
+                            </ul>
+                        </li>
+
+
+                        <li class="nav-item nav-dropdown">
+                            <a href="#" class="nav-link nav-dropdown-toggle">
+                                {{ info.PHMULTIHAR | safe}}
+                            </a>
+
+                            <ul class="nav-dropdown-items">
+
+                                {% for i in info.MultiSourL%}
+
+                                <li class="nav-item">
+                                    <a href="javascript:void(0);" onclick="setContent('{{i.url}}')" class="nav-link">
+                                        {{i.name}}
+                                    </a>
+                                </li>
+                                {% endfor%}
+                            </ul>
+                        </li>
+
+
+
+                    </ul>
+                    </li>
+
+
+
+
+                    </ul>
+                </nav>
+            </div>
+
+
+            <div class="content" id="content">
+
+
+                {% block content%} {% endblock %}
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        database = ""
+
+        function getDatabase() {
+            database = $("#setDatabase").val();
+        }
+
+        function setContent(url) {
+
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (resp) {
+                    $("#content").html(resp);
+                },
+                error: function (er) {
+                    alert("页面加载失败！！")
+                }
+            })
+        }
+
+        function connect2SQL() {
+            var database = '{{info.dataBase | safe}}'
+            connect = $("#connect");
+            if (!database) {
+                connect.removeClass("btn-success")
+                console.log("数据库连接失败！！！！！！！！")
+                return;
+            }
+            $.ajax({
+                url: '{{info.connect2SQL_url | safe}}',
+                type: "GET",
+                data: {
+                    "database": database
+                },
+                success: function (resp) {
+                    resp = JSON.parse(resp);
+                    if (resp.res) {
+                        connect.addClass("btn-success")
+
+                    } else {
+                        connect.removeClass("btn-success")
+
+                    }
+                },
+                error: function (er) {
+                    connect.removeClass("btn-success")
+                    console.log("ERRRRRR:", er)
+                }
+
+            })
+        }
+
+        $(function () {
+            connect2SQL();
+
+            //显示系统时间
+
+            setInterval(
+                "document.getElementById('time').innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",
+                1);
+            /* function time() {
+                 var vWeek, vWeek_s, vDay;
+                 vWeek = ["星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+                 var date = new Date();
+                 year = date.getFullYear();
+                 month = date.getMonth() + 1;
+                 day = date.getDate();
+                 hours = date.getHours();
+                 minutes = date.getMinutes();
+                 seconds = date.getSeconds();
+                 vWeek_s = date.getDay();
+                 document.getElementById("time").innerHTML = year + "年" + month + "月" + day + "日" + "\t" +
+                     hours + ":" + minutes + ":" + seconds + "\t" + vWeek[vWeek_s];
+
+             };
+             window.setInterval("time()", 1000);
+             */
+
+        })
+    </script>
+</body>
+
+</html>

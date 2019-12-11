@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block content%}
+<style>
+    .item {
+        height: 50px;
+        width: 50px;
+        line-height: 50px;
+        background: #eee;
+        border-radius: 50%;
+        text-align: center;
+        list-style: none;
+        position: absolute;
+        display: block;
+    }
+
+    #diagramContainer {
+        top: 50%;
+    }
+</style>
+<div class="alert alert-danger">{{info.page_name}}</div>
+
+<div id="diagramContainer">
+</div>
+
+<script>
+    var list = new Array();
+    diagramContainer = $('#diagramContainer');
+
+    function setDot() {
+        s = "";
+        for (var t = 1; t <= num; t++) {
+            s += "<div id='" + t + "' class='item'>" + t + "</div>";
+        };
+        diagramContainer.html(s);
+        setJsPlumb(num);
+    };
+
+    function setJsPlumb(num) {
+        jsPlumb.ready(function () {
+            jsPlumb.setContainer('diagramContainer')
+
+            var common = {
+                isSource: true,
+                isTarget: true,
+                DragOptions: {
+                    cursor: "pointer",
+                    zIndex: 15
+                },
+                connector: 'Straight',
+                endpoint: 'Dot',
+                connectorStyle: {
+                    outlineStroke: 'green',
+                    strokeWidth: 1,
+
+                },
+                connectorHoverStyle: {
+                    strokeWidth: 2
+                },
+                maxConnections: -1,
+                connectorOverlays: [
+                    ["Arrow", {
+                        location: 0.5
+                    }]
+                ]
+
+            }
+            //		item_left: div 上的id ,anchor: 只能相同的anchor
+            for (var t = 1; t <= num; t++) {
+                jsPlumb.addEndpoint('' + t, common)
+                jsPlumb.draggable('' + t)
+            }
+
+            jsPlumb.bind('click', function (conn) {
+                if (confirm('确定删除所点击的链接吗？')) {
+                    jsPlumb.deleteConnection(conn)
+                }
+            })
+        });
+    }
+
+    var num = 12;
+    setDot(num);
+
+    function getInfo() {
+        connections = jsPlumb.getAllConnections(); //获取所有的链接;
+        for (var i in connections) {
+            p3 = connections[i].sourceId; // 线的起始html元素的ID
+            p4 = connections[i].targetId; // 线的目标html元素的ID
+            list[i] = new Array();
+            list[i][0] = p3;
+            list[i][1] = p4;
+
+        }
+        console.log(list)
+    }
+</script>
+{% endblock %}

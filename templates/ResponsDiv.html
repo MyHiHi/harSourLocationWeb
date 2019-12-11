@@ -1,0 +1,604 @@
+{% block content%} {% endblock %}
+<style>
+.bg-light {
+    background-color: #efefef!important;
+}
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-light">
+                谐波源定位
+            </div>
+
+            <div class="card-body">
+                <div class="mb-12">
+                    <button class="btn btn-rounded btn-outline-danger" data-toggle="modal"
+                        data-target="#modal-2">谐波责任划分</button>
+
+                    {% comment %} Main {% endcomment %}
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% comment %} 这是弹出框代码 {% endcomment %}
+
+<div class="modal fade" id="modal-2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" style="width:145%;">
+            <div class="modal-header">
+                <h5 class="modal-title">谐波责任划分</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+
+                {% comment %} zhelillllllllllllllllllllllllllllllllllllllllllllllllllllllll {% endcomment %}
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="upcc" class="form-control-label">电压</label>
+                            <input id="upcc" class="form-control" value="0">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="ipcc" class="form-control-label">电流</label>
+                            <input id="ipcc" class="form-control" value="0">
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="is_client" class="form-control-label">结果大于0时,主谐波源在用户侧,否则在系统侧,无需划分</label>
+                            <button id="is_client" onclick="Is_client()" class="btn btn-rounded btn-primary">定向主谐波源位置</button>
+                        </div>
+
+                    </div>
+                    {% comment %} <div class="col-md-1">
+                        <div class="form-group">
+                            <label for="disabled-input" class="form-control-label">取消</label>
+                            <button class="btn btn-rounded btn-primary">取消</button>
+                        </div>
+
+                    </div> {% endcomment %}
+                </div>
+
+
+
+
+
+
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                不考虑背景谐波电压波动和阻抗变化
+                            </div>
+
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-light">
+                                                谐波责任图
+                                            </div>
+
+                                            <div class="card-body">
+                                            {% comment %} 简单谐波责任图的id：c_s_resp_graph {% endcomment %}
+                                                <div class="chartjs-size-monitor" id="c_s_resp_graph"
+                                                    style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+                                                    
+                                                </div>
+                                                <canvas id="line-chart" width="345" height="172"
+                                                    class="chartjs-render-monitor"
+                                                    style="display: block; width: 345px; height: 172px;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-6">
+
+                                        <div class="card">
+                                            <div class="card-header bg-light">
+                                                谐波发射水平与责任(均值)
+                                            </div>
+                                            <div class="card-body">
+                                                <div class=" mb-3 input-group">
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-info">系统侧谐波发射水平</button>
+                                                    </span>
+                                                    <input readonly type="text" id="s_dev" name="input1-group2"
+                                                        class="form-control text-center" placeholder="0">
+                                                </div>
+
+
+                                                <div class=" mb-3  input-group">
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-success">用户侧谐波发射水平</button>
+                                                    </span>
+                                                    <input readonly type="text" id="c_dev" name="input1-group2"
+                                                        class="form-control text-center" placeholder="0">
+                                                </div>
+
+
+                                                <div class=" mb-3 input-group">
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-primary">系统测谐波责任</button>
+                                                    </span>
+                                                    <input readonly type="text" id="ds_mean" name="input1-group2"
+                                                        class="form-control text-center" placeholder="0">
+                                                </div>
+
+                                                <div class=" mb-3 input-group">
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-danger">用户测谐波责任</button>
+                                                    </span>
+                                                    <input readonly type="text" id="dc_mean" name="input1-group2"
+                                                        class="form-control text-center" placeholder="0">
+                                                </div>
+
+
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                考虑背景谐波电压波动和阻抗变化
+                            </div>
+
+                            <div class="card-body">
+
+                            
+                            <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="window" class="form-control-label">滑动窗口参数</label>
+                            <input id="window" class="form-control" value="100">
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="step" class="form-control-label">每次后移参数</label>
+                            <input id="step" class="form-control" value="1">
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="params" class="form-control-label">筛选参数</label>
+                            <input id="params" class="form-control" value="0.85">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="e" class="form-control-label">提取凹陷区域聚类参数</label>
+                            <input id="e" class="form-control" value="0.02">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="disabled-input" class="form-control-label">谐波源责任划分</label>
+                            <button class="btn btn-rounded btn-primary">谐波源责任划分</button>
+                        </div>
+
+                    </div>
+                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 ">
+                                        <div class="col-md-12" style="margin-bottom:240px">
+                                            <div class="card">
+                                                <div class="card-header bg-light">
+                                                    有序队列图
+                                                </div>
+
+                                                <div class="card-body">
+                                                {% comment %} 复杂有序队列图的id：ordered_graph {% endcomment %}
+                                                    <div class="chartjs-size-monitor" id="ordered_graph"
+                                                        style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+                                                        
+                                                    </div>
+
+                                                    {% comment %} 这个地方可能需要 {% endcomment %}
+                                                    <canvas id="line-chart" width="345" height="172"
+                                                        class="chartjs-render-monitor"
+                                                        style="display: block; width: 345px; height: 172px;"></canvas>
+                                                    {% comment %} 这个地方可能需要 {% endcomment %}
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-header bg-light">
+                                                    聚类图
+                                                </div>
+
+                                                <div class="card-body">
+                                                {% comment %} 复杂聚类图的id：three_cluster_graph {% endcomment %}
+                                                    <div class="chartjs-size-monitor" id="three_cluster_graph"
+                                                        style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+                                                        
+                                                        
+                                                    </div>
+                                                    <canvas id="line-chart" width="345" height="172"
+                                                        class="chartjs-render-monitor"
+                                                        style="display: block; width: 345px; height: 172px;"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+
+
+
+                                    <div class="col-md-6">
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-header bg-light">
+                                                    谐波发射水平(均值)
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class=" mb-3 input-group">
+                                                        <span class="input-group-btn">
+                                                            <button type="button"
+                                                                class="btn btn-info">段一系统侧谐波发射水平</button>
+                                                        </span>
+                                                        <input readonly type="text" id="s_dev_1"
+                                                            name="input1-group2" class="form-control text-center"
+                                                            placeholder="0">
+                                                    </div>
+
+
+                                                    <div class=" mb-3  input-group">
+                                                        <span class="input-group-btn">
+                                                            <button type="button"
+                                                                class="btn btn-info">段一用户侧谐波发射水平</button>
+                                                        </span>
+                                                        <input readonly type="text" id="c_dev_1"
+                                                            name="input1-group2" class="form-control text-center"
+                                                            placeholder="0">
+                                                    </div>
+
+
+                                                    <div class=" mb-3 input-group">
+                                                        <span class="input-group-btn">
+                                                            <button type="button"
+                                                                class="btn btn-success">段二系统测谐波发射水平</button>
+                                                        </span>
+                                                        <input readonly type="text" id="s_dev_2"
+                                                            name="input1-group2" class="form-control text-center"
+                                                            placeholder="0">
+                                                    </div>
+
+                                                    <div class=" mb-3 input-group">
+                                                        <span class="input-group-btn">
+                                                            <button type="button"
+                                                                class="btn btn-success">段二用户测谐波发射水平</button>
+                                                        </span>
+                                                        <input readonly type="text" id="c_dev_2"
+                                                            name="input1-group2" class="form-control text-center"
+                                                            placeholder="0">
+                                                    </div>
+                                                    <div class=" mb-3 input-group">
+                                                        <span class="input-group-btn">
+                                                            <button type="button"
+                                                                class="btn btn-danger">段三系统测谐波发射水平</button>
+                                                        </span>
+                                                        <input readonly type="text" id="s_dev_3"
+                                                            name="input1-group2" class="form-control text-center"
+                                                            placeholder="0">
+                                                    </div>
+
+                                                    <div class=" mb-3 input-group">
+                                                        <span class="input-group-btn">
+                                                            <button type="button"
+                                                                class="btn btn-danger">段三用户测谐波发射水平</button>
+                                                        </span>
+                                                        <input readonly type="text" id="c_dev_3"
+                                                            name="input1-group2" class="form-control text-center"
+                                                            placeholder="0">
+                                                    </div>
+
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-header bg-light">
+                                                    谐波责任(均值)
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class=" mb-3 input-group">
+                                                        <span class="input-group-btn">
+                                                            <button type="button"
+                                                                class="btn btn-info">段一系统侧谐波责任</button>
+                                                        </span>
+                                                        <input readonly type="text" id="ds_mean_1"
+                                                            name="input1-group2" class="form-control text-center"
+                                                            placeholder="0">
+                                                    </div>
+
+
+                                                    <div class=" mb-3  input-group">
+                                                        <span class="input-group-btn">
+                                                            <button type="button"
+                                                                class="btn btn-info">段一用户侧谐波责任</button>
+                                                        </span>
+                                                        <input readonly type="text" id="dc_mean_1"
+                                                            name="input1-group2" class="form-control text-center"
+                                                            placeholder="0">
+                                                    </div>
+
+
+                                                    <div class=" mb-3 input-group">
+                                                        <span class="input-group-btn">
+                                                            <button type="button"
+                                                                class="btn btn-success">段二系统侧谐波责任</button>
+                                                        </span>
+                                                        <input readonly type="text" id="ds_mean_2"
+                                                            name="input1-group2" class="form-control text-center"
+                                                            placeholder="0">
+                                                    </div>
+
+
+                                                    <div class=" mb-3  input-group">
+                                                        <span class="input-group-btn">
+                                                            <button type="button"
+                                                                class="btn btn-success">段二用户侧谐波责任</button>
+                                                        </span>
+                                                        <input readonly type="text" id="dc_mean_2"
+                                                            name="input1-group2" class="form-control text-center"
+                                                            placeholder="0">
+                                                    </div>
+                                                    <div class=" mb-3 input-group">
+                                                        <span class="input-group-btn">
+                                                            <button type="button"
+                                                                class="btn btn-danger">段三系统侧谐波责任</button>
+                                                        </span>
+                                                        <input readonly type="text" id="ds_mean_3"
+                                                            name="input1-group2" class="form-control text-center"
+                                                            placeholder="0">
+                                                    </div>
+
+
+                                                    <div class=" mb-3  input-group">
+                                                        <span class="input-group-btn">
+                                                            <button type="button"
+                                                                class="btn btn-danger">段三用户侧谐波责任</button>
+                                                        </span>
+                                                        <input readonly type="text" id="dc_mean_3"
+                                                            name="input1-group2" class="form-control text-center"
+                                                            placeholder="0">
+                                                    </div>
+
+
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            {% comment %} liiiiiiiiiiiiiiiiiiiiiiiiiiii {% endcomment %}
+        </div>
+    </div>
+</div>
+</div>
+
+
+<script>
+// 复杂模式的聚类图 x1,y1：array格式的
+function draw_three_cluster_graph(x1,y1,x2,y2,x3,y3){
+     /*
+        数据的格式是
+        data: [
+            [10.0, 8.04],
+            [8.0, 6.95],
+            [13.0, 7.58],
+            [9.0, 8.81],
+            [11.0, 8.33],
+            [14.0, 9.96],
+            [6.0, 7.24],
+            [4.0, 4.26],
+            [12.0, 10.84],
+            [7.0, 4.82],
+            [5.0, 5.68]
+        ],
+    所以需要转换成上面这个样子的
+    let dat1 = [1,2,3];
+    let array2 = [4,5,6];
+    data = dat1.map((key,value)=>[key,array2[value]]);
+    data= [Array(2), Array(2), Array(2)]这是个array对象,也不知可不可以直接传到散点图上
+    */
+    data1 = x1.map((key,value)=>[key,y1[value]]);
+    data2 = x2.map((key,value)=>[key,y2[value]]);
+    data3 = x3.map((key,value)=>[key,y3[value]]);
+    var myChart = echarts.init(document.getElementById('three_cluster_graph'));
+    name1="段一";
+    name2="段二";
+    name3="段三";
+    option = {
+    xAxis: {
+                name: 'IPCC/A',
+                nameGap: 25,
+                nameLocation: 'middle',
+                nameTextStyle: {
+                    fontSize: 18
+                }
+    },
+    yAxis: {
+        name: 'UPCC/V',
+                nameGap: 25,
+                nameLocation: 'middle',
+                nameTextStyle: {
+                    fontSize: 18
+                }
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    title: {
+        text: '聚类散点图'
+    },
+    legend: {
+        right: 10,
+        data: [name1, name2,name3]
+    },
+    series: [{
+        name: name1,
+        symbolSize: 20,
+        data:data1,
+        type: 'scatter'
+    },
+    {
+        symbolSize: 20,
+        name: name2,
+        data:data2,
+        type: 'scatter'
+    },
+    {
+        symbolSize: 20,
+        name: name3,
+        data:data3,
+        type: 'scatter'
+    }
+    ]
+};
+    myChart.setOption(option);
+}
+// 复杂模式的队列图 x1,y1：array格式的
+function draw_ordered_graph(x1,y1){
+    var myChart = echarts.init(document.getElementById('ordered_graph'));
+    option = {
+    xAxis: {
+        type: 'category',
+        data: x1
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [{
+        data: y1,
+        type: 'line'
+    }]
+};
+    myChart.setOption(option);
+}
+
+// 简单模式的责任图 x1,y1,x2,y2：array格式的
+function draw_c_s_resp_graph(x1,y1,x2,y2){
+    var myChart = echarts.init(document.getElementById('c_s_resp_graph'));
+    option = {
+    visualMap: [{
+        show: false,
+        type: 'continuous',
+        seriesIndex: 0,
+        min: 0,
+        max: 400
+    }, {
+        show: false,
+        type: 'continuous',
+        seriesIndex: 1,
+        dimension: 0,
+        min: 0,
+        max: x1.length - 1
+    }],
+
+
+    title: [{
+        left: 'center',
+        text: '用户侧谐波责任图'
+    }, {
+        top: '55%',
+        left: 'center',
+        text: '系统侧谐波责任图'
+    }],
+    tooltip: {
+        trigger: 'axis'
+    },
+    xAxis: [{
+        data: x1
+    }, {
+        data: x2,
+        gridIndex: 1
+    }],
+    yAxis: [{
+        splitLine: {show: false}
+    }, {
+        splitLine: {show: false},
+        gridIndex: 1
+    }],
+    grid: [{
+        bottom: '60%'
+    }, {
+        top: '60%'
+    }],
+    series: [{
+        type: 'line',
+        showSymbol: false,
+        data: y1
+    }, {
+        type: 'line',
+        showSymbol: false,
+        data: y2,
+        xAxisIndex: 1,
+        yAxisIndex: 1
+    }]
+};
+    myChart.setOption(option);
+
+}
+</script>

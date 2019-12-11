@@ -1,0 +1,219 @@
+
+<style>
+    .item {
+        height: 50px;
+        width: 50px;
+        line-height: 50px;
+
+        border-radius: 50%;
+        text-align: center;
+        position: absolute;
+        display: block;
+    }
+
+    #diagramContainer {
+        top: 50%;
+    }
+    .Label_font{
+        font-weight:12px;
+        font-size:25px;
+        color:blue;
+    }
+</style>
+<div class="alert alert-danger">{{info.page_name}}</div>
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="row">
+
+            <div class="col-md-4">
+                <label for="input-group-2">输入节点个数</label>
+                <div class="input-group">
+                    <input type="text" id="dot_num" name="input1-group2" class="form-control" placeholder="0">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-info" onclick="setDot()"><i class="fa fa-search"></i>
+                            确定</button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label for="input-group-3"> 生成矩阵 </label>
+
+                <div class="input-group">
+                    <button class="btn btn-rounded btn-success" onclick="topo2Matrix()">生成矩阵</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label for="input-group-3"> 清空 </label>
+
+                <div class="input-group">
+                    <button class="btn btn-rounded btn-danger" onclick="removeAllNodes()">清空当前节点</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div class=" row">
+    <div id="diagramContainer">
+    </div>
+</div>
+
+<script>
+    var list = new Array();
+    var connections = {};
+    start();
+    console.log(jsPlumb)
+    var num = 0;
+    
+    function setDot() {
+        reload();
+        try {
+            num = Number($('#dot_num').val().replace(/(^\s*)|\s*$/g,''));
+            s = "";
+            var colors = ['bg-info', 'bg-warning', 'bg-success', 'bg-primary', 'bg-danger']
+            for (var t = 1; t <= num; t++) {
+                s += "<div id='" + t + "' class='item " + colors[t % (colors.length)] + "'>" + t + "</div>";
+            };
+            $("#diagramContainer").html(s);
+            setJsPlumb(num);
+        } catch (err) {
+            alert('请输入节点个数！')
+            console.log(err)
+        }
+
+    };
+
+    function setJsPlumb(num) {
+        for (var t = 1; t <= num; t++) {
+            jsPlumb.addEndpoint('' + t, window.common)
+            jsPlumb.draggable('' + t)
+        }
+    }
+
+
+    function start() {
+        jsPlumb.setContainer('diagramContainer')
+
+        window.common = {
+            isSource: true,
+            isTarget: true,
+            DragOptions: {
+                cursor: "pointer",
+                zIndex: 15
+            },
+            connector: "Straight",
+            endpoint: 'Dot',
+            paintStyle: {
+                        strokeStyle: "#FF8800",
+                        fillStyle:"#EE7700",
+                        lineWidth: 1
+            },    
+            connectorStyle: {
+                lineWidth: 2,//连接线宽度
+                strokeStyle: "green",//连接线颜色
+                outlineColor: "white",
+                outlineWidth: 0
+            },
+            connectorHoverStyle: {
+                lineWidth: 4,
+                    strokeStyle: "#989898",
+                    outlineColor: "white",
+                    outlineWidth: 0,
+            },
+            maxConnections: -1,
+            connectorOverlays: [
+                ["Arrow", {
+                    location: 0.5
+                }]
+            ]
+
+        }
+        jsPlumb.bind('click', function (conn,originalEvent) {
+            if (confirm('确定删除所点击的链接吗？')) {
+                jsPlumb.detach(conn)
+            }
+        });
+    }
+
+    function topo2Matrix() {
+        var y = 0;
+        connections = jsPlumb.getAllConnections(); //获取所有的链接;
+        for (var i in connections) {
+            p3 = connections[i].sourceId; // 线的起始html元素的ID
+            p4 = connections[i].targetId; // 线的目标html元素的ID
+            if (p3 != p4) {
+                list[y] = new Array();
+                list[y][0] = p3;
+                list[y][1] = p4;
+                y = y + 1;
+                connections[i].addOverlay(
+                    [
+                        'Label',
+                        {
+                            label: (y-1)+'',
+                            location: 0.7,
+                            cssClass: 'Label_font' ,
+                            visible: true,
+                            events: {
+                                dblclick(label) {
+                                    console.log("MMM")
+                                    // 双击的回调事件
+                                }
+                            }
+                        }
+                    ]
+                )
+            }
+        }
+    
+    console.log(arrToStr(list));
+    }
+
+
+    function removeAllNodes() {
+
+        if (confirm('确定清空当前所有结点吗？')) {
+               reload(); 
+        }
+    } 
+
+
+    function arrToStr(objarr) {
+        var arrLen = objarr.length;
+        var row = "[";
+        for (var i = 0; i < arrLen; i++) {
+            row += "[";
+            for (var j = 0; j < objarr[i].length; j++) {
+                row += objarr[i][j];
+                if (j < objarr[i].length - 1) {
+                    row += ",";
+                }
+            }
+            row += "]";
+            if (i < arrLen - 1) {
+                row += ",";
+            }
+        }
+        row += "]";
+        return row;
+    }
+
+    function reload() {
+        jsPlumb.empty("diagramContainer");
+                jsPlumb.deleteEveryEndpoint();
+               // jsPlumb.reset();
+                connections=jsPlumb.getAllConnections()
+                for (var i in connections) {
+                    p3 = connections[i] // 线的起始html元素的ID
+                    jsPlumb.detach(p3)
+                }
+                //清空 所有 connection 的源节点和终止节点
+                list=[];
+
+    }
+</script>
