@@ -20,155 +20,65 @@
                     </div>
                     <div class="card-header bg-light">
                         请选择一些监测点进行谐波源定位（一般大于估计谐波源数量）
-                    </div>
-                    <div class="card-body" id="data_table">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th><input type="checkbox" class="i-checks" id="questionCheck" /></th>
-                                        <th>ID</th>
-                                        <th>Site_Name</th>
-                                        <th>Site_Description</th>
-                                        <th>LevelV</th>
-                                        <th>Unicode</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="Site_table">
+                        </diav>
+                        <div class="card-body" id="data_table">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th><input type="checkbox" class="i-checks" id="questionCheck" /></th>
+                                            <th>ID</th>
+                                            <th>Site_Name</th>
+                                            <th>Site_Description</th>
+                                            <th>LevelV</th>
+                                            <th>Unicode</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="Site_table">
 
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
+
+                        <button class="btn btn-rounded btn-primary" onclick="">提交</button>
+
                     </div>
-
-                    <button class="btn btn-rounded btn-primary" onclick="">提交</button>
-
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-    var DATA_BASE = null;
-    var HIGH_DATA_BASE = null;
-    var LOW_DATA_BASE = null;
-    var SAFE_DATA_BASE = null;
-    connect = $("#connect");
-    var is_connect = false;
-    $(function () {
-        is_connect = connect.hasClass('btn-success')
-        if (is_connect) {
-            console.log("database：", database)
-            Init_server();
-        } else {
-            return;
+    <script>
+        DATA_BASE = {{DATA_BASE | safe}};
+        HIGH_DATA_BASE = {{HIGH_DATA_BASE | safe}};
+        LOW_DATA_BASE = {{LOW_DATA_BASE | safe}};
+        SAFE_DATA_BASE = {{SAFE_DATA_BASE | safe}};
+        Set_site_table(DATA_BASE);
+        function Set_site_table(df) {
+            s = "";
+            df.forEach((r) => {
+                s += "<tr><td><div align='center'><input type='checkbox' name='id' value='1'></div></td><td>" +
+                    r.id + "</td><td class='text-nowrap'>" + r.name + "</td><td>" + r.description +
+                    "</td><td>" + r.levelV + "</td><td>" + r.unitcode + "</td></tr>"
+            })
+
+            $('#Site_table').html(s);
+        }
+        function Show_all() {
+            Set_site_table(DATA_BASE);
         }
 
-    })
-
-    function Connect_and_getData(DATA) {
-        flag = true;
-        if (!is_connect) {
-            flag = false;
-        } else if (!DATA || !DATA.length) {
-            flag = false;
+        function Show_high() {
+            Set_site_table(HIGH_DATA_BASE);
         }
-        return flag;
-    }
 
-    function Init_server() {
-        $.ajax({
-            url: '{{info.multiHarSouLocation_url | safe}}',
-            type: "GET",
-            data: {
-                "database": database
-            },
-            success: function (resp) {
-                
-                DATA_BASE = {{DATA_BASE | safe}}.res;
-                HIGH_DATA_BASE = {{HIGH_DATA_BASE | safe}}.res;
-                LOW_DATA_BASE = {{LOW_DATA_BASE | safe}}.res;
-                SAFE_DATA_BASE = {{SAFE_DATA_BASE | safe}}.res;
-                data = {{DATA_BASE | safe}};
-                console.log("多点定位的返回数据：",DATA_BASE,HIGH_DATA_BASE);
-                df = data.res;
-                s = "";
-                for (var t = 0; t < df.length; t++) {
-                    s += "<tr><td><div align='center'><input type='checkbox' name='id' value='1'></div></td><td>" +
-                        df[t][0] + "</td><td class='text-nowrap'>" + df[t][1] + "</td><td>" + df[t][2] +
-                        "</td><td>" + df[t][6] + "</td><td>" + df[t][7] + "</td></tr>"
-                    console.log(df[t][2])
-                }
-                $('#Site_table').html(s);
-            },
-            error: function (er) {
-                console.log("ERRRRRR:", er)
-            }
-        })
-    }
+        function Show_low() {
+            Set_site_table(LOW_DATA_BASE);
+        }
 
-    function Show_all() {
-        df = DATA_BASE;
-        if (!Connect_and_getData(df)) {
-            return;
+        function Show_safe() {
+            Set_site_table(SAFE_DATA_BASE);
         }
-        s = ""
-        for (var t = 0; t < df.length; t++) {
-            s += "<tr><td><div align='center'><input type='checkbox' name='id' value='1'></div></td><td>" + df[t][0] +
-                "</td><td class='text-nowrap'>" + df[t][1] + "</td><td>" + df[t][2] + "</td><td>" + df[t][6] +
-                "</td><td>" + df[t][7] + "</td></tr>"
-            console.log(df[t][2])
-        }
-        $('#Site_table').html(s);
-    }
-
-    function Show_high() {
-        df = HIGH_DATA_BASE;
-        if (!Connect_and_getData(df)) {
-            return;
-        }
-        s = ""
-        for (var t = 0; t < df.length; t++) {
-            s += "<tr><td><div align='center'><input type='checkbox' name='id' value='1'></div></td><td>" + df[t][0] +
-                "</td><td class='text-nowrap'>" + df[t][1] + "</td><td>" + df[t][2] + "</td><td>" + df[t][6] +
-                "</td><td>" + df[t][7] + "</td></tr>"
-            console.log(df[t][2])
-        }
-        $('#Site_table').html(s);
-    }
-
-    function Show_low() {
-        df = LOW_DATA_BASE;
-        if (!Connect_and_getData(df)) {
-            return;
-        }
-        s = ""
-        for (var t = 0; t < df.length; t++) {
-            s += "<tr><td><div align='center'><input type='checkbox' name='id' value='1'></div></td><td>" + df[t][0] +
-                "</td><td class='text-nowrap'>" + df[t][1] + "</td><td>" + df[t][2] + "</td><td>" + df[t][6] +
-                "</td><td>" + df[t][7] + "</td></tr>"
-            console.log(df[t][2])
-        }
-        $('#Site_table').html(s);
-    }
-
-    function Show_safe() {
-        df = SAFE_DATA_BASE;
-        if (!Connect_and_getData(df)) {
-            return;
-        }
-        s = ""
-        for (var t = 0; t < df.length; t++) {
-            s += "<tr><td><div align='center'><input type='checkbox' name='id' value='1'></div></td><td>" + df[t][0] +
-                "</td><td class='text-nowrap'>" + df[t][1] + "</td><td>" + df[t][2] + "</td><td>" + df[t][6] +
-                "</td><td>" + df[t][7] + "</td></tr>"
-            console.log(df[t][2])
-        }
-        $('#Site_table').html(s);
-    }
-</script>
-
-
-
-{% endblock %}
+    </script>
+    {% endblock %}

@@ -1,8 +1,17 @@
 import os,django
 import pymssql
 from django.conf import settings as SET
-# from .utils import singleton
+from .models import Site,BaseData
+import json
 # 数据库配置****************
+import decimal
+
+class DecimalEncoder(json.JSONEncoder):
+        def default(self, o):
+            if isinstance(o, decimal.Decimal):
+                return float(o)
+            super(DecimalEncoder, self).default(o)
+
 data=SET.DATA_INFO
 class SqlServerConn():
     
@@ -18,6 +27,9 @@ class SqlServerConn():
             return False;
             
     def fetDataByRows(self,table=data.get("Base_Data_Table"),row=""):
+        
+        # lp=json.dumps({"info":p},ensure_ascii=False,cls=DecimalEncoder); 
+        # print(lp)
         try:
             if row:
                 sql = "select  * from {1} a ".format(row,data.get("Site_Table", None))

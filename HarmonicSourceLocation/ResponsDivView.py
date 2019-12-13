@@ -3,7 +3,7 @@ from django.shortcuts import render,render_to_response
 from django.http import HttpResponse, JsonResponse
 import json
 from django.views.generic import View  
-from .SQLServerConnect import *
+# from .SQLServerConnect import *
 from django.conf import settings as SET
 from .ResponsDiv.util import Util
 from .ResponsDiv.plsregress import Plsregress

@@ -141,40 +141,7 @@
             })
         }
 
-        function connect2SQL() {
-            var database = '{{info.dataBase | safe}}'
-            connect = $("#connect");
-            if (!database) {
-                connect.removeClass("btn-success")
-                console.log("数据库连接失败！！！！！！！！")
-                return;
-            }
-            $.ajax({
-                url: '{{info.connect2SQL_url | safe}}',
-                type: "GET",
-                data: {
-                    "database": database
-                },
-                success: function (resp) {
-                    resp = JSON.parse(resp);
-                    if (resp.res) {
-                        connect.addClass("btn-success")
-
-                    } else {
-                        connect.removeClass("btn-success")
-
-                    }
-                },
-                error: function (er) {
-                    connect.removeClass("btn-success")
-                    console.log("ERRRRRR:", er)
-                }
-
-            })
-        }
-
         $(function () {
-            connect2SQL();
             //显示系统时间
             setInterval(
                 "document.getElementById('time').innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",

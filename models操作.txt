@@ -1,0 +1,37 @@
+Base_data.site_id -----> Site.id
+
+1.连接sqlserver操作：
+pip install?django-pyodbc-azure
+DATABASES = {
+    'default': {
+        'ENGINE': 'sql_server.pyodbc',
+        'NAME': 'PQES',
+        'HOST': '127.0.0.1',
+        'PORT': '1433',
+        'USER': 'sa',
+        'PASSWORD': '123456',
+        'OPTIONS': {
+            'driver': 'SQL Server Native Client 10.0',
+            'MARS_Connection': True,
+        },
+    }
+}
+
+python manage.py makemigrations?
+
+python manage.py migrate
+
+2. 操作数据库：
+
+增加：
+	p=Person.objects.create(first_name='xiaomi',last_name='华创');
+    	p.save();
+
+查看: 
+
+	转为json格式：lp=Person.objects.values()
+   		返回列表：list(lp)
+
+		返回json格式: c=json.dumps({"info":list(lp)},ensure_ascii=False); 
+
+Decimal('320.00').to_eng_string()

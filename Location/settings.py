@@ -75,20 +75,20 @@ WSGI_APPLICATION = 'Location.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "sqlserver",
-#         "NAME": "hotel",
-#         "USER": "root",
-#         "PASSWORD": "root",
-#         "HOST": "127.0.0.1",
-#         "PORT": "1433",
-#          'OPTIONS': {
-#             'DRIVER': 'SQL Server Native Client 10.0',
-#               'MARS_Connection': True,
-#         },
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'sql_server.pyodbc',
+        'NAME': 'PQESM',
+        'HOST': '127.0.0.1',
+        'PORT': '1433',
+        'USER': 'sa',
+        'PASSWORD': '123456',
+        'OPTIONS': {
+            'driver': 'SQL Server Native Client 10.0',
+            'MARS_Connection': True,
+        },
+    }
+}
 
 
 # Password validation
@@ -143,8 +143,6 @@ INDEX={"name":"主页","url":"/index"};
 TOPO2MATRIX={"name":"拓扑图转为矩阵","url":"/topo2Matrix"};
 HarSouLocation={"name":"基于正交匹配的谐波源定位","url":"/HarSouLocation"};
 MultiHarSouLocation={"name":"基于JADE算法多谐波源定位","url":"/MultiHarSouLocation"};
-CONNECT2SQL={"name":"连接sqlserver","url":"/connect2SQL"}
-# MyDATABASES=['PQES','test','Dream']
 MyDATABASES="PQES"
 PHAR="基于正交匹配的谐波源定位";
 PHMULTIHAR="基于JADE算法多谐波源定位"
@@ -165,7 +163,7 @@ MultiSourL=[
 
 INFO={'SourceL':SourceL,'MultiSourL':MultiSourL,"Index":Index,'theme':'谐波源定位与责任划分',
       "PHAR":PHAR,'PHMULTIHAR':PHMULTIHAR,
-             'top':'功能栏',"dataBase":MyDATABASES,"connect2SQL_url":CONNECT2SQL["url"],
+             'top':'功能栏',"dataBase":MyDATABASES,
              "topo2Matrix_url":TOPO2MATRIX,"multiHarSouLocation_url":MultiHarSouLocation["url"]
              }
 
