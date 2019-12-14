@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'Location.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'sql_server.pyodbc',
-        'NAME': 'PQESM',
+        'NAME': 'PQESH',
         'HOST': '127.0.0.1',
         'PORT': '1433',
         'USER': 'sa',

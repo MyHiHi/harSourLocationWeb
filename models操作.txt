@@ -1,14 +1,14 @@
 Base_data.site_id -----> Site.id
 
-Á¬½Ó¹«ÓÃµÄgithub²Ö¿â:
-	fork ÎÒµÄÏîÄ¿ µ½ ×Ô¼ºµÄ²Ö¿âÖĞ ----> ĞŞ¸Ä´úÂëÖ®ºó£¬ÔÚ×Ô¼ºµÄ²Ö¿âÖĞ£¨Pull Requests ÄÇÀï£©£¬create a pull request. ----> ÎÒÍ¬Òâºó£¬ ¾Í¿ÉÒÔºÏ²¢ÁË¡£
+è¿æ¥å…¬ç”¨çš„githubä»“åº“:
+	fork æˆ‘çš„é¡¹ç›® åˆ° è‡ªå·±çš„ä»“åº“ä¸­ ----> ä¿®æ”¹ä»£ç ä¹‹åï¼Œåœ¨è‡ªå·±çš„ä»“åº“ä¸­ï¼ˆPull Requests é‚£é‡Œï¼‰ï¼Œcreate a pull request. ----> æˆ‘åŒæ„åï¼Œ å°±å¯ä»¥åˆå¹¶äº†ã€‚
 
-1.Á¬½Ósqlserver²Ù×÷£º
+1.è¿æ¥sqlserveræ“ä½œï¼š
 pip install?django-pyodbc-azure
 DATABASES = {
     'default': {
         'ENGINE': 'sql_server.pyodbc',
-        'NAME': 'PQES',
+        'NAME': 'PQESH',
         'HOST': '127.0.0.1',
         'PORT': '1433',
         'USER': 'sa',
@@ -24,17 +24,17 @@ python manage.py makemigrations?
 
 python manage.py migrate
 
-2. ²Ù×÷Êı¾İ¿â£º
+2. æ“ä½œæ•°æ®åº“ï¼š
 
-Ôö¼Ó£º
-	p=Person.objects.create(first_name='xiaomi',last_name='»ª´´');
+å¢åŠ ï¼š
+	p=Person.objects.create(first_name='xiaomi',last_name='ååˆ›');
     	p.save();
 
-²é¿´: 
+æŸ¥çœ‹: 
 
-	×ªÎªjson¸ñÊ½£ºlp=Person.objects.values()
-   		·µ»ØÁĞ±í£ºlist(lp)
+	è½¬ä¸ºjsonæ ¼å¼ï¼šlp=Person.objects.values()
+   		è¿”å›åˆ—è¡¨ï¼šlist(lp)
 
-		·µ»Øjson¸ñÊ½: c=json.dumps({"info":list(lp)},ensure_ascii=False); 
+		è¿”å›jsonæ ¼å¼: c=json.dumps({"info":list(lp)},ensure_ascii=False); 
 
 Decimal('320.00').to_eng_string()
