@@ -1,5 +1,8 @@
 Base_data.site_id -----> Site.id
 
+连接公用的github仓库:
+	fork 我的项目 到 自己的仓库中 ----> 修改代码之后，在自己的仓库中（Pull Requests 那里），create a pull request. ----> 我同意后， 就可以合并了。
+
 1.连接sqlserver操作：
 pip install?django-pyodbc-azure
 DATABASES = {
