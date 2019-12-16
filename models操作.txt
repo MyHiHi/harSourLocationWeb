@@ -8,7 +8,7 @@ Base_data.site_id -----> Site.id
 1.2 python manage.py makemigrations
     python manage.py migrate
     这个时候PQESH上有很多表
-1.3 在PQESH上运行PQESH.sql文件，导入数据
+1.3 在PQESH上运行PQESH.sql文件之前，手动在数据库表Base_Data上设置id和Site_id为主键，然后导入数据
 pip install django-pyodbc-azure
 DATABASES = {
     'default': {
