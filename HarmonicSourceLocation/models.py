@@ -8,29 +8,48 @@
 from django.db import models
 
 
-class BaseData(models.Model):
-    site = models.ForeignKey('Site', models.DO_NOTHING, db_column='Site_id', primary_key=True)  # Field name made lowercase.
-    id = models.IntegerField()
-    v = models.FloatField(db_column='V', blank=True, null=True)  # Field name made lowercase.
-    i = models.FloatField(db_column='I', blank=True, null=True)  # Field name made lowercase.
-
-    class Meta:
-        db_table = 'Base_Data'
-        unique_together = (('site', 'id'),)
-
-
 class Site(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=64, blank=True, null=True)
     description = models.CharField(max_length=255, blank=True, null=True)
     rank = models.IntegerField(blank=True, null=True)
-    connectiontypeid = models.SmallIntegerField(db_column='connectionTypeID', blank=True, null=True)  # Field name made lowercase.
-    nominalbasev = models.FloatField(db_column='nominalBaseV', blank=True, null=True)  # Field name made lowercase.
-    levelV = models.FloatField( db_column="levelV",blank=True, null=True)  # Field name made lowercase.
+    # Field name made lowercase.
+    connectiontypeid = models.SmallIntegerField(
+        db_column='connectionTypeID', blank=True, null=True)
+    # Field name made lowercase.
+    nominalbasev = models.FloatField(
+        db_column='nominalBaseV', blank=True, null=True)
+    # Field name made lowercase.
+    levelV = models.FloatField(db_column="levelV", blank=True, null=True)
     unitcode = models.CharField(max_length=50, blank=True, null=True)
-    stationid = models.IntegerField(db_column='stationID', blank=True, null=True)  # Field name made lowercase.
-    shortcircuitcapacity = models.FloatField(db_column='ShortCircuitCapacity', blank=True, null=True)  # Field name made lowercase.
-    tableid = models.BigIntegerField(db_column='tableID', blank=True, null=True)  # Field name made lowercase.
+    # Field name made lowercase.
+    stationid = models.IntegerField(
+        db_column='stationID', blank=True, null=True)
+    # Field name made lowercase.
+    shortcircuitcapacity = models.FloatField(
+        db_column='ShortCircuitCapacity', blank=True, null=True)
+    # Field name made lowercase.
+    tableid = models.BigIntegerField(
+        db_column='tableID', blank=True, null=True)
 
     class Meta:
         db_table = 'Site'
+        verbose_name_plural = u"监测点表"
+
+
+class BaseData(models.Model):
+    # Field name made lowercase.
+    site = models.ForeignKey(Site,  to_field="id",
+                             related_name="Site_id", db_column='Site_id', on_delete=models.CASCADE)
+    id = models.IntegerField(primary_key=True)
+    # Field name made lowercase.
+    v = models.FloatField(db_column='V', blank=True, null=True)
+    # Field name made lowercase.
+    i = models.FloatField(db_column='I', blank=True, null=True)
+
+    class Meta:
+        db_table = 'Base_Data'
+        unique_together = (('site', 'id'),)
+
+        verbose_name_plural = u"基础数据表"
+    primary = ('site', 'id')
