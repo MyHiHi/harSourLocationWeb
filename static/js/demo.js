@@ -2,9 +2,9 @@ $(document).ready(function() {
     /**
      * Line Chart
      */
-    function lineChart(x, y) {
+    function lineChart(x, y,x2,y2) {
         console.log('*******************8')
-        var lineChart = $('#line-chart');
+        var lineChart = $('#c_s_resp_graph');
         if (lineChart.length > 0) {
             new Chart(lineChart, {
                 type: 'line',

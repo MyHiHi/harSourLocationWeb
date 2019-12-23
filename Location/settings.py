@@ -55,7 +55,7 @@ ROOT_URLCONF = 'Location.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -63,7 +63,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                
+
             ],
         },
     },
@@ -128,9 +128,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = "/static/"
-TEMPLATES_URL=os.path.join(BASE_DIR,'templates')
-STATICFILES_DIRS=[
-   os.path.join(BASE_DIR,'static')
+TEMPLATES_URL = os.path.join(BASE_DIR, 'templates')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
 ]
 
 STATICFILES_FINDERS = (
@@ -138,37 +138,37 @@ STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 )
 
-#配置页面参数部分***********
-INDEX={"name":"主页","url":"/index"};
-TOPO2MATRIX={"name":"拓扑图转为矩阵","url":"/topo2Matrix"};
-HarSouLocation={"name":"基于正交匹配的谐波源定位","url":"/HarSouLocation"};
-MultiHarSouLocation={"name":"基于JADE算法多谐波源定位","url":"/MultiHarSouLocation"};
-MyDATABASES="PQES"
-PHAR="基于正交匹配的谐波源定位";
-PHMULTIHAR="基于JADE算法多谐波源定位"
-INFO_CONF=[
-    {'name':INDEX["name"],'url':INDEX["url"]},
+# 配置页面参数部分***********
+INDEX = {"name": "主页", "url": "/index"}
+TOPO2MATRIX = {"name": "拓扑图转为矩阵", "url": "/topo2Matrix"}
+HarSouLocation = {"name": "基于正交匹配的谐波源定位", "url": "/HarSouLocation"}
+MultiHarSouLocation = {"name": "基于JADE算法多谐波源定位", "url": "/MultiHarSouLocation"}
+MyDATABASES = "PQES"
+PHAR = "基于正交匹配的谐波源定位"
+PHMULTIHAR = "基于JADE算法多谐波源定位"
+INFO_CONF = [
+    {'name': INDEX["name"], 'url':INDEX["url"]},
     # {'name':TOPO2MATRIX["name"],'url':TOPO2MATRIX["url"]},
     # {'name':HarSouLocation["name"],'url':HarSouLocation["url"]},
     # {'name':MultiHarSouLocation["name"],"url":MultiHarSouLocation["url"]}
-];
-Index={'name':INDEX["name"],'url':INDEX["url"]}
-SourceL=[
-    {'name':HarSouLocation["name"],'url':HarSouLocation["url"]},
-    {'name':TOPO2MATRIX["name"],'url':TOPO2MATRIX["url"]}
 ]
-MultiSourL=[
-    {'name':MultiHarSouLocation["name"],"url":MultiHarSouLocation["url"]}
+Index = {'name': INDEX["name"], 'url': INDEX["url"]}
+SourceL = [
+    {'name': TOPO2MATRIX["name"], 'url':TOPO2MATRIX["url"]},
+    {'name': HarSouLocation["name"], 'url':HarSouLocation["url"]}
+]
+MultiSourL = [
+    {'name': MultiHarSouLocation["name"], "url":MultiHarSouLocation["url"]}
 ]
 
-INFO={'SourceL':SourceL,'MultiSourL':MultiSourL,"Index":Index,'theme':'谐波源定位与责任划分',
-      "PHAR":PHAR,'PHMULTIHAR':PHMULTIHAR,
-             'top':'功能栏',"dataBase":MyDATABASES,
-             "topo2Matrix_url":TOPO2MATRIX,"multiHarSouLocation_url":MultiHarSouLocation["url"]
-             }
+INFO = {'SourceL': SourceL, 'MultiSourL': MultiSourL, "Index": Index, 'theme': '谐波源定位与责任划分',
+        "PHAR": PHAR, 'PHMULTIHAR': PHMULTIHAR,
+        'top': '功能栏', "dataBase": MyDATABASES,
+        "topo2Matrix_url": TOPO2MATRIX, "multiHarSouLocation_url": MultiHarSouLocation["url"]
+        }
 
-#操纵数据库
-CONNECTION=None
+# 操纵数据库
+CONNECTION = None
 # 实验室SQLServer
 # DATA_INFO={"HOST":"121.195.170.238",
 #            "USER":'sa',
@@ -179,14 +179,13 @@ CONNECTION=None
 
 
 # 章涛的sqlServer
-DATA_INFO={"HOST":"127.0.0.1",
-           "USER":'sa',
-           "PASSWORD":'123456',
-           "DATABASE":'PQES',
-           "Site_Table":"Site",
-           "Base_Data_Table":"Base_Data"
-}
-
+DATA_INFO = {"HOST": "127.0.0.1",
+             "USER": 'sa',
+             "PASSWORD": '123456',
+             "DATABASE": 'PQES',
+             "Site_Table": "Site",
+             "Base_Data_Table": "Base_Data"
+             }
 
 
 # 冯函宇的sqlServer
@@ -197,22 +196,20 @@ DATA_INFO={"HOST":"127.0.0.1",
 #            "Site_Table":"Site",
 #            "Base_Data_Table":"Base_Data"
 # }
-#数据库返回的总数据
-DATA_BASE=None
-HIGH_DATA_BASE=None
-LOW_DATA_BASE=None
-SAFE_DATA_BASE=None
-
-
+# 数据库返回的总数据
+DATA_BASE = None
+HIGH_DATA_BASE = None
+LOW_DATA_BASE = None
+SAFE_DATA_BASE = None
 
 
 # IPCC:numpy 列表的格式
-IPCC=None;
-UPCC=None;
-#当前数据是否为复数
-IS_COMPLEX=False
-#默认的窗口大小 、后移步长、筛选参数、聚类算法的参数
-WINDOW=100
-STEP=1
-PARAMS=0.85
-E=0.02
+IPCC = None
+UPCC = None
+# 当前数据是否为复数
+IS_COMPLEX = False
+# 默认的窗口大小 、后移步长、筛选参数、聚类算法的参数
+WINDOW = 100
+STEP = 1
+PARAMS = 0.85
+E = 0.02

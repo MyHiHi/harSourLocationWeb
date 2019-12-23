@@ -29,7 +29,8 @@
             <div class="col-md-4">
                 <label for="input-group-2">输入节点个数</label>
                 <div class="input-group">
-                    <input type="text" id="dot_num" name="input1-group2" class="form-control" placeholder="0">
+                    <input type="text" id="dot_num" name="input1-group2" class="form-control" placeholder="检测个数">
+                    <input type="text" id="iter_num" name="input1-group2" class="form-control" placeholder="迭代次数">
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-info" onclick="setDot()"><i class="fa fa-search"></i>
                             确定</button>
@@ -150,18 +151,19 @@
                 list[y] = new Array();
                 list[y][0] = p3;
                 list[y][1] = p4;
+                list[y][2]=y+1;
                 y = y + 1;
                 connections[i].addOverlay(
                     [
                         'Label',
                         {
-                            label: (y-1)+'',
+                            label: (y)+'',
                             location: 0.7,
                             cssClass: 'Label_font' ,
                             visible: true,
                             events: {
                                 dblclick(label) {
-                                    console.log("MMM")
+                                   // console.log("MMM")
                                     // 双击的回调事件
                                 }
                             }
@@ -170,11 +172,46 @@
                 )
             }
         }
-    
-    console.log(arrToStr(list));
+    c=arrToStr(list);
+    console.log(c);
+    getMatrix(eval(c));
     }
 
+    function getMatrix(lis){
+        res={};
+        iter_num=$("#iter_num").val();
+        if (!isRealNum(iter_num)){
+           alert("请迭代次数！");
+           return ;
+       }
+        for (i=0;i<num;i++){
+            res[i+1]={};
+        };
+        lis.forEach((item,index)=>{
+           k=res[item[0]];
+           k[item[1]]=item[2];
+        })
+       // console.log(res);
+        re=JSON.stringify(res);
+       // console.log("%:::%",re)
+        $.get("GetMatrix",{"matrix":re,"iter_num":iter_num},(re)=>{
+          //  console.log(re)
+          console.log("OKK")
+        })
+        //console.log("*****",re)
 
+    }
+function isRealNum(val){
+　　if(val === "" || val ==null){
+        return false;
+　　}
+   if(!isNaN(val)){　　
+　　　 return true; 
+　　}
+　else{ 
+　　　　return false; 
+　　} 
+}
     function removeAllNodes() {
 
         if (confirm('确定清空当前所有结点吗？')) {

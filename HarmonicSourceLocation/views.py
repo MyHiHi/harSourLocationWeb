@@ -51,6 +51,32 @@ class Topo2Matrix(View):
     def http_method_not_allowed(self, request, *args, **kwargs):
         return HttpResponse('你使用的是%s请求，但是不支持get以外的其他请求！' % request.method)
 
+
+class GetMatrix(View):
+    def get(self, request, *args, **kwargs):
+        # 这是生成的矩阵
+        res={};
+        matrix = eval(dict(request.GET).get("matrix")[0])
+        iter_num = int(dict(request.GET).get("iter_num")[0])
+        matr = {}
+        for k, v in matrix.items():
+            k = int(k)
+            matr[k] = {}
+            if len(v):
+                for n, m in v.items():
+                    matr[k].update({int(n): m})
+
+        # return matr;
+
+        # print("*******:", json.loads(matrix))
+        # print("*******:", eval(matrix))
+        # for i in matrix.
+        return HttpResponse(json.dumps(res))
+
+    def http_method_not_allowed(self, request, *args, **kwargs):
+        return HttpResponse('你使用的是%s请求，但是不支持get以外的其他请求！' % request.method)
+
+
 # 基于正交匹配的谐波源定位
 
 

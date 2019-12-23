@@ -15,20 +15,26 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from HarmonicSourceLocation import views,ResponsDivView
+from HarmonicSourceLocation import views, ResponsDivView
 urlpatterns = [
-    path('topo2Matrix/',views.Topo2Matrix.as_view(),name='topo2Matrix'),
-    path('HarSouLocation/',views.HarSouLocation.as_view(),name='HarSouLocation'),
-    path('MultiHarSouLocation/',views.MultiHarSouLocation.as_view(),name='MultiHarSouLocation'),
+    path('topo2Matrix/', views.Topo2Matrix.as_view(), name='topo2Matrix'),
+    path('GetMatrix/', views.GetMatrix.as_view(), name='GetMatrix'),
+    
+    path('HarSouLocation/', views.HarSouLocation.as_view(), name='HarSouLocation'),
+    path('MultiHarSouLocation/', views.MultiHarSouLocation.as_view(),
+         name='MultiHarSouLocation'),
     # path('connect2SQL/',views.Connect2SQL.as_view(),name='connect2SQL'),
-    path('index/',views.Index.as_view(),name='index'),
-    path('IsClient/',ResponsDivView.IsClient.as_view(),name='IsClient'),
-    path('GetSimpleAver/',ResponsDivView.GetSimpleAver.as_view(),name='GetSimpleAver'),
-    path('GetOrderData/',ResponsDivView.GetOrderData.as_view(),name='GetOrderData'),
-    path('GetThreeClusterData/',ResponsDivView.GetThreeClusterData.as_view(),name='GetThreeClusterData'),
-    path('GetThreeDevResp/',ResponsDivView.GetThreeDevResp.as_view(),name='GetThreeDevResp'),
-    path('test/',views.Test.as_view(),name="test"),
-    path('', views.Start.as_view(),name='start')
+    path('index/', views.Index.as_view(), name='index'),
+    path('IsClient/', ResponsDivView.IsClient.as_view(), name='IsClient'),
+    path('GetSimpleAver/', ResponsDivView.GetSimpleAver.as_view(),
+         name='GetSimpleAver'),
+    path("GetDrawResp/", ResponsDivView.GetDrawResp.as_view(), name='GetDrawResp'),
+    path('GetOrderData/', ResponsDivView.GetOrderData.as_view(), name='GetOrderData'),
+    path('GetThreeClusterData/', ResponsDivView.GetThreeClusterData.as_view(),
+         name='GetThreeClusterData'),
+    path('GetThreeDevResp/', ResponsDivView.GetThreeDevResp.as_view(),
+         name='GetThreeDevResp'),
+    path('test/', views.Test.as_view(), name="test"),
+    path('', views.Start.as_view(), name='start')
     # path("admin/", admin.site.urls),
 ]
-

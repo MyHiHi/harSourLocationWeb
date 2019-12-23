@@ -68,6 +68,7 @@ class Optics(object):
         return N.sqrt(N.sum(d, axis=1))
 
     def get_ordered_data(self):
+        print("*****MER**")
         optics = self.get_optics(k=4)
         RD, order = optics.get('RD'), optics.get('order')
         le = self.data.shape[0]

@@ -44,7 +44,7 @@ class Plsregress(object):
         ipcc,upcc,zs=np.array(ipcc),np.array(upcc),np.array(zs);
         t1=ipcc*zs;
         t2=upcc;
-        deg=self.angle(t1)-self.angle(t2);
+        deg=self.util.angle(t1)-self.util.angle(t2);
         cos_deg=np.cos(deg);
         # print(np.mean(np.abs(zs*ipcc)/np.abs(upcc)),"MMMMMMMMMMMMMMMMMM")
         try:
@@ -57,8 +57,8 @@ class Plsregress(object):
     def get_draw_resp(self):
         resp=self.get_responsibility();
         y1,y2=resp.get('dc'),resp.get('ds');
-        x1,x2=(range(len(y1))),(range(len(y2)));
-        return {"dc_resp":y1,"dc_len":x1,"ds_resp":y2,"ds_len":x2}
+        x1,x2=list(range(len(y1))),list(range(len(y2)));
+        return {"dc_resp":list(y1.flat),"dc_len":x1,"ds_resp":list(y2.flat),"ds_len":x2}
         
         
         
