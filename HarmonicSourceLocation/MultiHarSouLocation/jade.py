@@ -7,11 +7,11 @@ from .hsnum import harsnum_e
 from .joint_diag_rc import joint_diag_rc
 
 
-def jade(MatrixDX, m, XX1,XX2):
+def jade(MatrixDX, m,X,XX):
     #path = 'fuzhixiangwei1000.xlsx'
     #path = 'week.xlsx'
-    m = harsnum_e(XX1,XX2).get('hs_num')
-    MatrixDX = harsnum_e(XX1,XX2).get('MatrixDX')
+    m = harsnum_e(X,XX).get('hs_num')
+    MatrixDX = harsnum_e(X,XX).get('MatrixDX')
 
     MatrixDXt = MatrixDX.T
 
@@ -37,7 +37,7 @@ def jade(MatrixDX, m, XX1,XX2):
             IW = (U[0:n, k[n - m :n]]).dot(ibl)
     else:
         IW = sqrtm(MatrixDX.dot(MatrixDXt) / T)
-        W = np.matrix(IW).I
+        W = np.mat(IW).I
     '''
     Y为白化后的观测信号
     YY为Y的转置矩阵
@@ -80,8 +80,8 @@ def jade(MatrixDX, m, XX1,XX2):
     '''
     Q.reshape((m * m), (m * m))矩阵进行奇异值分解，得到特征向量矩阵U和特征值矩阵D
     '''
-
-    D, U = np.linalg.eig((Q.reshape((m * m), (m * m))))
+    Q = Q.reshape((m * m), (m * m))
+    D, U = np.linalg.eig(Q)
     la = sorted(abs(D), reverse=False)
     K = np.array(np.argsort(np.abs(D)) + 1)
 

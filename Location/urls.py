@@ -19,12 +19,17 @@ from HarmonicSourceLocation import views, ResponsDivView
 urlpatterns = [
     path('topo2Matrix/', views.Topo2Matrix.as_view(), name='topo2Matrix'),
     path('GetMatrix/', views.GetMatrix.as_view(), name='GetMatrix'),
-    
+    path('GetSourLocation/', views.GetSourLocation.as_view(), name='GetSourLocation'),
+
     path('HarSouLocation/', views.HarSouLocation.as_view(), name='HarSouLocation'),
     path('MultiHarSouLocation/', views.MultiHarSouLocation.as_view(),
          name='MultiHarSouLocation'),
+    path('CreateStation/', views.CreateStation.as_view(), name='CreateStation'),
+    path('Sitepost/', views.Sitepost.as_view(), name="Sitepost"),
+    path('Stationpost/', views.Stationpost.as_view(), name="Stationpost"),
     # path('connect2SQL/',views.Connect2SQL.as_view(),name='connect2SQL'),
     path('index/', views.Index.as_view(), name='index'),
+    path('getRespDiv/', ResponsDivView.getRespDiv.as_view(), name='getRespDiv'),
     path('IsClient/', ResponsDivView.IsClient.as_view(), name='IsClient'),
     path('GetSimpleAver/', ResponsDivView.GetSimpleAver.as_view(),
          name='GetSimpleAver'),

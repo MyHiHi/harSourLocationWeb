@@ -1,4 +1,3 @@
-
 <style>
     .item {
         height: 50px;
@@ -14,10 +13,11 @@
     #diagramContainer {
         top: 50%;
     }
-    .Label_font{
-        font-weight:12px;
-        font-size:25px;
-        color:blue;
+
+    .Label_font {
+        font-weight: 12px;
+        font-size: 25px;
+        color: blue;
     }
 </style>
 <div class="alert alert-danger">{{info.page_name}}</div>
@@ -30,7 +30,7 @@
                 <label for="input-group-2">输入节点个数</label>
                 <div class="input-group">
                     <input type="text" id="dot_num" name="input1-group2" class="form-control" placeholder="检测个数">
-                    <input type="text" id="iter_num" name="input1-group2" class="form-control" placeholder="迭代次数">
+
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-info" onclick="setDot()"><i class="fa fa-search"></i>
                             确定</button>
@@ -38,22 +38,36 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
-                <label for="input-group-3"> 生成矩阵 </label>
+            <div class="col-md-2">
+                <label for="input-group-3"> 生成关联矩阵 </label>
 
                 <div class="input-group">
                     <button class="btn btn-rounded btn-success" onclick="topo2Matrix()">生成矩阵</button>
                 </div>
             </div>
-            <div class="col-md-4">
-                <label for="input-group-3"> 清空 </label>
+            <div class="col-md-2">
+                <label for="input-group-3"> 清空节点 </label>
 
                 <div class="input-group">
                     <button class="btn btn-rounded btn-danger" onclick="removeAllNodes()">清空当前节点</button>
                 </div>
             </div>
+             <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        关联矩阵
+                    </div>
+
+                    <div class="card-body bg-light text-center" id="matrix_result">
+                        
+                    </div>
+                </div>
+            </div>
 
         </div>
+
+
+       
     </div>
 </div>
 
@@ -70,11 +84,11 @@
     start();
     console.log(jsPlumb)
     var num = 0;
-    
+
     function setDot() {
         reload();
         try {
-            num = Number($('#dot_num').val().replace(/(^\s*)|\s*$/g,''));
+            num = Number($('#dot_num').val().replace(/(^\s*)|\s*$/g, ''));
             s = "";
             var colors = ['bg-info', 'bg-warning', 'bg-success', 'bg-primary', 'bg-danger']
             for (var t = 1; t <= num; t++) {
@@ -110,21 +124,21 @@
             connector: "Straight",
             endpoint: 'Dot',
             paintStyle: {
-                        strokeStyle: "#FF8800",
-                        fillStyle:"#EE7700",
-                        lineWidth: 1
-            },    
+                strokeStyle: "#FF8800",
+                fillStyle: "#EE7700",
+                lineWidth: 1
+            },
             connectorStyle: {
-                lineWidth: 2,//连接线宽度
-                strokeStyle: "green",//连接线颜色
+                lineWidth: 2, //连接线宽度
+                strokeStyle: "green", //连接线颜色
                 outlineColor: "white",
                 outlineWidth: 0
             },
             connectorHoverStyle: {
                 lineWidth: 4,
-                    strokeStyle: "#989898",
-                    outlineColor: "white",
-                    outlineWidth: 0,
+                strokeStyle: "#989898",
+                outlineColor: "white",
+                outlineWidth: 0,
             },
             maxConnections: -1,
             connectorOverlays: [
@@ -134,7 +148,7 @@
             ]
 
         }
-        jsPlumb.bind('click', function (conn,originalEvent) {
+        jsPlumb.bind('click', function (conn, originalEvent) {
             if (confirm('确定删除所点击的链接吗？')) {
                 jsPlumb.detach(conn)
             }
@@ -151,19 +165,19 @@
                 list[y] = new Array();
                 list[y][0] = p3;
                 list[y][1] = p4;
-                list[y][2]=y+1;
+                list[y][2] = y + 1;
                 y = y + 1;
                 connections[i].addOverlay(
                     [
                         'Label',
                         {
-                            label: (y)+'',
+                            label: (y) + '',
                             location: 0.7,
-                            cssClass: 'Label_font' ,
+                            cssClass: 'Label_font',
                             visible: true,
                             events: {
                                 dblclick(label) {
-                                   // console.log("MMM")
+                                    // console.log("MMM")
                                     // 双击的回调事件
                                 }
                             }
@@ -172,54 +186,59 @@
                 )
             }
         }
-    c=arrToStr(list);
-    console.log(c);
-    getMatrix(eval(c));
+        c = arrToStr(list);
+      //  console.log(c);
+        getMatrix(eval(c));
     }
 
-    function getMatrix(lis){
-        res={};
-        iter_num=$("#iter_num").val();
-        if (!isRealNum(iter_num)){
-           alert("请迭代次数！");
-           return ;
-       }
-        for (i=0;i<num;i++){
-            res[i+1]={};
+    function getMatrix(lis) {
+        res = {};
+
+        for (i = 0; i < num; i++) {
+            res[i + 1] = {};
         };
-        lis.forEach((item,index)=>{
-           k=res[item[0]];
-           k[item[1]]=item[2];
+        lis.forEach((item, index) => {
+            k = res[item[0]];
+            k[item[1]] = item[2];
         })
-       // console.log(res);
-        re=JSON.stringify(res);
-       // console.log("%:::%",re)
-        $.get("GetMatrix",{"matrix":re,"iter_num":iter_num},(re)=>{
-          //  console.log(re)
-          console.log("OKK")
+        // console.log(res);
+        re = JSON.stringify(res);
+        // console.log("%:::%",re)
+        $.get("GetMatrix", {
+            "matrix": re
+        }, (re) => {
+            p="<strong><br /> "
+            matrix=$.parseJSON(re)["matrix"]
+            matrix.forEach((r)=>{
+                p+=r+"<br />"
+            })
+            p+="</strong>"
+            //p=arrToStr(matrix);
+            $("#matrix_result").html(p)
         })
-        //console.log("*****",re)
 
     }
-function isRealNum(val){
-　　if(val === "" || val ==null){
-        return false;
-　　}
-   if(!isNaN(val)){　　
-　　　 return true; 
-　　}
-　else{ 
-　　　　return false; 
-　　} 
-}
+
     function removeAllNodes() {
 
         if (confirm('确定清空当前所有结点吗？')) {
-               reload(); 
+            reload();
         }
-    } 
+    }
 
-
+//一维数组
+/*function arrToStr1(objarr) {
+        var arrLen = objarr.length;
+        var row = "[";
+            for (var j = 0; j < arrLen; j++) {
+                row += objarr[j];
+                
+            }
+            row += "]";
+        return row;
+    }
+    */
+    //二维数组
     function arrToStr(objarr) {
         var arrLen = objarr.length;
         var row = "[";
@@ -228,7 +247,7 @@ function isRealNum(val){
             for (var j = 0; j < objarr[i].length; j++) {
                 row += objarr[i][j];
                 if (j < objarr[i].length - 1) {
-                    row += ",";
+                    row += " ,";
                 }
             }
             row += "]";
@@ -242,15 +261,15 @@ function isRealNum(val){
 
     function reload() {
         jsPlumb.empty("diagramContainer");
-                jsPlumb.deleteEveryEndpoint();
-               // jsPlumb.reset();
-                connections=jsPlumb.getAllConnections()
-                for (var i in connections) {
-                    p3 = connections[i] // 线的起始html元素的ID
-                    jsPlumb.detach(p3)
-                }
-                //清空 所有 connection 的源节点和终止节点
-                list=[];
+        jsPlumb.deleteEveryEndpoint();
+        // jsPlumb.reset();
+        connections = jsPlumb.getAllConnections()
+        for (var i in connections) {
+            p3 = connections[i] // 线的起始html元素的ID
+            jsPlumb.detach(p3)
+        }
+        //清空 所有 connection 的源节点和终止节点
+        list = [];
 
     }
 </script>

@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'HarmonicSourceLocation'
+    'HarmonicSourceLocation',
+    'HarmonicSourceLocation.myTags'
 ]
 
 MIDDLEWARE = [
@@ -65,7 +66,11 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
 
             ],
+            'libraries':{
+            'custom_filters': 'HarmonicSourceLocation.myTags.extra_tags'
+        }
         },
+        
     },
 ]
 
@@ -158,6 +163,7 @@ SourceL = [
     {'name': HarSouLocation["name"], 'url':HarSouLocation["url"]}
 ]
 MultiSourL = [
+    {"name":"新建电网分析对象","url":"CreateStation/"},
     {'name': MultiHarSouLocation["name"], "url":MultiHarSouLocation["url"]}
 ]
 
@@ -182,7 +188,8 @@ CONNECTION = None
 DATA_INFO = {"HOST": "127.0.0.1",
              "USER": 'sa',
              "PASSWORD": '123456',
-             "DATABASE": 'PQES',
+             "DATABASE": 'PQESH',
+             "Table": "myCurrent",
              "Site_Table": "Site",
              "Base_Data_Table": "Base_Data"
              }
@@ -201,13 +208,17 @@ DATA_BASE = None
 HIGH_DATA_BASE = None
 LOW_DATA_BASE = None
 SAFE_DATA_BASE = None
-
+#前端提交的监测点
+SITE_POST=None
 
 # IPCC:numpy 列表的格式
 IPCC = None
 UPCC = None
 # 当前数据是否为复数
 IS_COMPLEX = False
+# Optics聚类算法的对象
+# optics是在运行 有序队列图 函数后才有值
+OPTICS = None
 # 默认的窗口大小 、后移步长、筛选参数、聚类算法的参数
 WINDOW = 100
 STEP = 1

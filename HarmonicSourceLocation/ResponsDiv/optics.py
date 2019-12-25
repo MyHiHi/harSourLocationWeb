@@ -76,10 +76,10 @@ class Optics(object):
         for i in range(le):
             rr[i] = RD[order[i]]
         return rr
-    def get_ordered_data(self):
+    def get_ordered_da(self):
         y1 = self.get_ordered_data()
-        x1 = range(len(y1));
-        return {"reach_dis":y1,"times":x1}
+        x1 = list(range(len(y1)));
+        return {"reach_dis":list(y1.flat),"times":x1}
     def draw_ordered_graph(self, label1='用户侧', title='有序队列图', xlabel='', ylabel='可达距离'):
         y1 = self.get_ordered_data()
         x1 = range(len(y1))
@@ -111,12 +111,15 @@ class Optics(object):
         return mark
 
     def get_three_section(self):
+        
         le = self.data.shape[0]
         mark = self.get_cluster()
         ipccn_1, upccn_1 = [], []
         ipccn_2, upccn_2 = [], []
         ipccn_3, upccn_3 = [], []
-        ipccn, upccn = self.ipccn, self.upccn
+        # ipccn, upccn = self.ipccn.tolist(), self.upccn.tolist();
+        ipccn, upccn = self.ipccn, self.upccn;
+        # print("HHHHHHHH:",upccn)
         for i in range(le):
             if mark[i] == 0:
                 ipccn_1.append(ipccn[i])
@@ -127,10 +130,11 @@ class Optics(object):
             else:
                 ipccn_3.append(ipccn[i])
                 upccn_3.append(upccn[i])
-        return {'pccn_1': [ipccn_1, upccn_1],
+        c={'pccn_1': [ipccn_1, upccn_1],
                 'pccn_2': [ipccn_2, upccn_2],
                 'pccn_3': [ipccn_3, upccn_3],
                 }
+        return c
 
     def draw_three_section(self,  color1='b', color2='g', color3='r', label1='段一', label2='段二', label3='段三', title='聚类图', xlabel='IPCC/A', ylabel='UPCC/V'):
    
@@ -187,11 +191,14 @@ class Optics(object):
                 'pccn_3_pls': {'zs_3': zs_3, 'us_3': us_3}}
 
     def get_three_section_responsibility_mean(self):
-        sections = self.get_three_section()
+        sections = self.get_three_section();
+        
         ipccn_1, upccn_1 = sections.get('pccn_1')
         ipccn_2, upccn_2 = sections.get('pccn_2')
         ipccn_3, upccn_3 = sections.get('pccn_3')
-        pccn_pls = self.get_three_section_plsregress()
+        print("MMMMMM")
+        pccn_pls = self.get_three_section_plsregress();
+        print("WEEEEE: ",pccn_pls)
         zs_1 = pccn_pls.get('pccn_1_pls').get('zs_1')
         zs_2 = pccn_pls.get('pccn_2_pls').get('zs_2')
         zs_3 = pccn_pls.get('pccn_3_pls').get('zs_3')
@@ -200,7 +207,8 @@ class Optics(object):
         pccn_2_resp_mean = self.util.get_responsibility_mean(
             ipccn_2, upccn_2, zs_2)
         pccn_3_resp_mean = self.util.get_responsibility_mean(
-            ipccn_3, upccn_3, zs_3)
+            ipccn_3, upccn_3, zs_3);
+        print("^^^^^^^^:",pccn_3_resp_mean)
         return {'pccn_1_resp_mean': pccn_1_resp_mean,
                 'pccn_2_resp_mean': pccn_2_resp_mean, "pccn_3_resp_mean": pccn_3_resp_mean}
 

@@ -1,10 +1,10 @@
-{% block content%} {% endblock %}
+
 <style>
   .bg-light {
     background-color: #efefef !important;
   }
 </style>
-<div class="row">
+<!-- <div class="row">
   <div class="col-md-12">
     <div class="card">
       <div class="card-header bg-light">
@@ -23,8 +23,8 @@
     </div>
 
   </div>
-</div>
-
+</div> -->
+ {% block content%} {% endblock %}
 
 {% comment %} 这是弹出框代码 {% endcomment %}
 
@@ -63,7 +63,9 @@
           <div class="col-md-4">
             <div class="form-group">
               <label for="is_client" class="form-control-label">结果大于0时,主谐波源在用户侧,否则在系统侧,无需划分</label>
-              <button id="is_client" onclick="Is_client()" class="btn btn-rounded btn-primary">定向主谐波源位置</button>
+              {% comment %} <button id="is_client" onclick="Is_client"
+                class="btn btn-rounded btn-primary">定向主谐波源位置</button> {% endcomment %}
+              <button id="is_client" onclick="Is_Client()" class="btn btn-rounded btn-primary">定向主谐波源位置</button>
             </div>
 
           </div>
@@ -199,7 +201,8 @@
                   <div class="col-md-2">
                     <div class="form-group">
                       <label for="disabled-input" class="form-control-label">谐波源责任划分</label>
-                      <button class="btn btn-rounded btn-primary">谐波源责任划分</button>
+                      <button class="btn btn-rounded btn-primary" onclick="startComplex()"
+                        id="complex_resp">谐波源责任划分</button>
                     </div>
 
                   </div>
@@ -215,7 +218,7 @@
 
                         <div class="card-body">
                           {% comment %} 复杂有序队列图的id：ordered_graph {% endcomment %}
-     
+
 
                           {% comment %} 这个地方可能需要 {% endcomment %}
                           <canvas id="ordered_graph" width="345" height="172" class="chartjs-render-monitor"
@@ -234,7 +237,7 @@
 
                         <div class="card-body">
                           {% comment %} 复杂聚类图的id：three_cluster_graph {% endcomment %}
-                          
+
                           <canvas id="three_cluster_graph" width="345" height="172" class="chartjs-render-monitor"
                             style="display: block; width: 345px; height: 172px;"></canvas>
                         </div>
@@ -394,82 +397,61 @@
   // 复杂模式的聚类图 x1,y1：array格式的
   // 改用 Chart.Js 下面的代码还没改
   function draw_three_cluster_graph(x1, y1, x2, y2, x3, y3) {
-    /*
-        数据的格式是
-        data: [
-            [10.0, 8.04],
-            [8.0, 6.95],
-            [13.0, 7.58],
-            [9.0, 8.81],
-            [11.0, 8.33],
-            [14.0, 9.96],
-            [6.0, 7.24],
-            [4.0, 4.26],
-            [12.0, 10.84],
-            [7.0, 4.82],
-            [5.0, 5.68]
-        ],
-    所以需要转换成上面这个样子的
-    let dat1 = [1,2,3];
-    let array2 = [4,5,6];
-    data = dat1.map((key,value)=>[key,array2[value]]);
-    data= [Array(2), Array(2), Array(2)]这是个array对象,也不知可不可以直接传到散点图上
-    */
-    data1 = x1.map((key, value) => [key, y1[value]]);
-    data2 = x2.map((key, value) => [key, y2[value]]);
-    data3 = x3.map((key, value) => [key, y3[value]]);
-    var myChart = echarts.init(document.getElementById('three_cluster_graph'));
-    name1 = "段一";
-    name2 = "段二";
-    name3 = "段三";
-    option = {
-      xAxis: {
-        name: 'IPCC/A',
-        nameGap: 25,
-        nameLocation: 'middle',
-        nameTextStyle: {
-          fontSize: 18
-        }
-      },
-      yAxis: {
-        name: 'UPCC/V',
-        nameGap: 25,
-        nameLocation: 'middle',
-        nameTextStyle: {
-          fontSize: 18
-        }
-      },
-      tooltip: {
-        trigger: 'axis'
-      },
-      title: {
-        text: '聚类散点图'
-      },
-      legend: {
-        right: 10,
-        data: [name1, name2, name3]
-      },
-      series: [{
-          name: name1,
-          symbolSize: 20,
-          data: data1,
-          type: 'scatter'
+    var lineChart = document.getElementById("three_cluster_graph");
+    var myLineChart = new Chart(lineChart.getContext("2d"), {
+      type: 'scatter',
+    data: {
+        datasets: [{
+            label: '段一',
+            borderColor: '#2196F3',
+            backgroundColor: 'rgba(66, 165, 245, 0.5)',
+            data: [
+            {
+                x: 20,
+                y: 10
+            }
+            ]
         },
         {
-          symbolSize: 20,
-          name: name2,
-          data: data2,
-          type: 'scatter'
+            label: '段二',
+            backgroundColor: "#EEEED1",
+            borderColor: 'rgba(0,102,51,1)',
+            data: [{
+                x: 20,
+                y: 10
+            }, {
+                x: 10,
+                y: 12
+            }, {
+                x: -10,
+                y: 5
+            }]
         },
-        {
-          symbolSize: 20,
-          name: name3,
-          data: data3,
-          type: 'scatter'
+         {
+            label: '段三',
+            backgroundColor: "#6A5ACD",
+            borderColor: 'rgba(0,102,51,1)',
+            data: [{
+                x: 20,
+                y: 10
+            }, {
+                x: 10,
+                y: 12
+            }, {
+                x: -10,
+                y: 5
+            }]
+        }]
+    },
+    options: {
+        scales: {
+            xAxes: [{
+                type: 'linear',
+                position: 'bottom'
+            }]
         }
-      ]
-    };
-    myChart.setOption(option);
+    }
+    });
   }
   // 复杂模式的队列图 x1,y1：array格式的
   function draw_ordered_graph(x1, y1) {
@@ -477,18 +459,18 @@
     var myLineChart = new Chart(lineChart.getContext("2d"), {
       type: 'line',
       data: {
-      labels: x1,
-      datasets: [{
-        label: '用户侧谐波责任图',
-        data: y1,
-        backgroundColor: 'rgba(66, 165, 245, 0.5)',
-        borderColor: '#2196F3',
-        borderWidth: 0,
-        pointHoverRadius: 8,
-            pointRadius: 1,
-            pointHitRadius: 16,
-      }]
-    },
+        labels: x1,
+        datasets: [{
+          label: '有序队列图',
+          data: y1,
+          backgroundColor: 'rgba(66, 165, 245, 0.5)',
+          borderColor: '#2196F3',
+          borderWidth: 0,
+          pointHoverRadius: 8,
+          pointRadius: 1,
+          pointHitRadius: 16,
+        }]
+      },
       options: {
         title: {
           display: true,
@@ -504,7 +486,8 @@
 
   //判断是否需要划分
   IsClient = false;
-  function Is_client(){
+
+  function Is_Client() {
     upcc = $("#upcc").val();
     ipcc = $("#ipcc").val();
     $.getJSON("IsClient/", {
@@ -512,44 +495,87 @@
       ipcc: ipcc
     }, (res, status, xhr) => {
       resp = res.res;
-      console.log("********:", resp)
       if (!resp) {
         alert("主谐波源在系统侧,无需划分")
       } else {
+        if (confirm("主谐波源在用户侧,是否划分?")) {
+          startSimple();
+          startComplex();
+        } else {
+          alert("点击了取消");
+        }
 
-  startSimple();
-  startComplex();
-      
       }
     });
   }
 
-function startSimple(){
-$.get("GetSimpleAver/",(res)=>{
-        $("#c_dev").val({{ info.c_dev}});
-        $("#s_dev").val({{ info.s_dev}});
-        $("#dc_mean").val({{ info.dc_mean}});
-        $("#ds_mean").val({{ info.ds_mean}});
-      });
-      console.log("****************8")
-      $.get("GetDrawResp/",(res)=>{
-       x1={{info.dc_len | safe}};
-        y1={{info.dc_resp | safe}};
-        x2={{info.ds_len | safe}};
-        y2={{info.ds_resp | safe}};
-        draw_c_s_resp_graph(x1,y1,x2,y2);
-        
-      });
-}
-function startComplex(){
-$.get("GetOrderData/",(res)=>{
-      x1={{info.times | safe}};
-        y1={{info.reach_dis | safe}};
-        console.log(x1,y1)
-        
-      });
-}
+  function startSimple() {
+    $.get("GetSimpleAver/", function (res) {
+      res = $.parseJSON(res)["res_p"]
+      $("#c_dev").val(res.c_dev);
+      $("#s_dev").val(res.s_dev);
+      $("#dc_mean").val(res.dc_mean);
+      $("#ds_mean").val(res.ds_mean);
+    });
+    $.get("GetDrawResp/", function (res) {
+      res = $.parseJSON(res)["draw_p"]
+      x1 = res.dc_len;
+      y1 = res.dc_resp;
+      x2 = res.ds_len;
+      y2 = res.ds_resp;
+      draw_c_s_resp_graph(x1, y1, x2, y2);
+    });
+  }
 
+  function startComplex() {
+    $.get("GetOrderData/", (res) => {
+      res = $.parseJSON(res)["order_p"]
+      x1 = res.times;
+      y1 = res.reach_dis;
+      draw_ordered_graph(x1, y1);
+      ThreeDevResp();
+      ThreeCluster();
+    });
+  }
+
+  function ThreeCluster(){
+    $.get("GetThreeClusterData/", (res) => {
+      res = $.parseJSON(res)["three_p"];
+      console.log(">>>>>>>>: ",res);
+      pccn_1=res.pccn_1;
+      pccn_2=res.pccn_2;
+      pccn_3=res.pccn_3;
+      console.log("&&&:",pccn_2)
+      /*ipccn_1=res.pccn_1[0];
+      upccn_1=res.pccn_1[1];
+      ipccn_2=res.pccn_2[0];
+      upccn_2=res.pccn_2[1];
+      ipccn_3=res.pccn_3[0];
+      upccn_3=res.pccn_3[1];
+      */
+      //draw_three_cluster_graph(ipccn_1,upccn_1,ipccn_2,upccn_2,ipccn_3,upccn_3);  
+      })
+  }
+  function ThreeDevResp() {
+    $.get("GetThreeDevResp/", (res) => {
+      res = $.parseJSON(res)["tdev_p"];
+      console.log("NN:",res)
+      //发射部分
+      $("#s_dev_1").val(res.dev_1.s_dev);
+      $("#c_dev_1").val(res.dev_1.c_dev);
+      $("#s_dev_2").val(res.dev_2.s_dev);
+      $("#c_dev_2").val(res.dev_2.c_dev);
+      $("#s_dev_3").val(res.dev_3.s_dev);
+      $("#c_dev_3").val(res.dev_3.c_dev);
+      //责任部分
+      $("#ds_mean_1").val(res.pccn_1_resp_mean.ds_mean);
+      $("#dc_mean_1").val(res.pccn_1_resp_mean.dc_mean);
+      $("#ds_mean_2").val(res.pccn_2_resp_mean.ds_mean);
+      $("#dc_mean_2").val(res.pccn_2_resp_mean.dc_mean);
+      $("#ds_mean_3").val(res.pccn_3_resp_mean.ds_mean);
+      $("#dc_mean_3").val(res.pccn_3_resp_mean.dc_mean);
+    })
+  }
 
   /**
    * Line Chart
@@ -559,29 +585,30 @@ $.get("GetOrderData/",(res)=>{
     var myLineChart = new Chart(lineChart.getContext("2d"), {
       type: 'line',
       data: {
-      labels: x,
-      datasets: [{
-        label: '用户侧谐波责任图',
-        data: y1,
-        backgroundColor: 'rgba(66, 165, 245, 0.5)',
-        borderColor: '#2196F3',
-        borderWidth: 0,
-        pointHoverRadius: 8,
+        labels: x,
+        datasets: [{
+            label: '用户侧谐波责任图',
+            data: y1,
+            backgroundColor: 'rgba(66, 165, 245, 0.5)',
+            borderColor: '#2196F3',
+            borderWidth: 0,
+            pointHoverRadius: 8,
             pointRadius: 1,
             pointHitRadius: 16,
-      },
-      {
-        label: '系统侧谐波责任图',
-        data: y2,
-        backgroundColor:"#EEEED1",
-        borderColor: 'rgba(0,102,51,1)',
-        borderWidth: 0,
-        pointHoverRadius: 8,
+          },
+          {
+            label: '系统侧谐波责任图',
+            data: y2,
+            backgroundColor: "#EEEED1",
+            borderColor: 'rgba(0,102,51,1)',
+            borderWidth: 0,
+            pointHoverRadius: 8,
             pointHoverBorderWidth: 4,
             pointRadius: 1,
             pointHitRadius: 16,
-      }]
-    },
+          }
+        ]
+      },
       options: {
         title: {
           display: true,

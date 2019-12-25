@@ -2,10 +2,8 @@
 
 import numpy as np
 
-def harsnum_e(XX1,XX2):
-    X = np.array([XX1, XX2])
-    XX = np.array([XX1, XX2])
-    # X = np.array([XX6, XX8,XX12,XX14])
+def harsnum_e(X,XX):
+    # X = np.array([XX6, XX8, XX12, XX14])
     # XX = np.array([XX1, XX2, XX3, XX4, XX5, XX6, XX7, XX8, XX9, XX10, XX11, XX12, XX13, XX14])
 
     MatrixX = np.mat(X)

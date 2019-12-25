@@ -1,9 +1,83 @@
-{% extends 'ResponsDiv.html' %}
+{% extends 'ResponsDiv.html'%}
 {% block content%}
 <div class="alert alert-info">{{info.page_name}}</div>
+<div class="row">
 
+  <div class="col-md-4">
+    <label for="input-group-2">输入迭代次数</label>
+    <div class="input-group">
+      <input type="text" id="iter_num" name="input1-group2" class="form-control" placeholder="迭代次数">
+
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-info" onclick="getLocation()"><i class="fa fa-search"></i>
+          确定</button>
+      </span>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header bg-light">
+        定位结果
+      </div>
+
+      <div class="card-body bg-light">
+        {% comment %} 显示结果 {% endcomment %}
+       <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>选择</th>
+                                        <th>谐波源序号</th>
+                                        <th>电流值</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="localtion_result">
+                                    
+                                    </tbody>
+                                    
+                                </table>
+                                <button class="btn btn-rounded btn-outline-danger" data-toggle="modal" data-target="#modal-2">谐波责任划分</button>
+                              
+                            </div>
+
+        {% comment %} 显示结果 {% endcomment %}
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function isRealNum(val) {
+    if (val === "" || val == null) {
+      return false;
+    }
+    if (!isNaN(val)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function getLocation() {
+    iter_num = $("#iter_num").val();
+    if (!isRealNum(iter_num)) {
+      alert("请输入迭代次数！");
+      return;
+    }
+    $.get("GetSourLocation", {
+      "iter_num": iter_num
+    }, (resu) => {
+      re = $.parseJSON(resu)
+      re = re["location"];
+      trs="";
+      for (i = 0; i < re.length; i++) {
+        n = re[i];
+        console.log(n);
+        trs+="<tr><td><input name='mer' type='radio'/></td><td>"+n[0]+"</td><td>"+n[1]+"</td></tr>";
+      };
+      $("#localtion_result").html(trs)
+    })
+  }
+</script>
 {% endblock %}
-
-
-
-

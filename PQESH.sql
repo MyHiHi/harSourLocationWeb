@@ -1,22 +1,23 @@
 USE [PQESH]
 GO
 
-INSERT [PQESH].[dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (1, N'节点1', N'监测点1', 1, 0, 1, 220, N'DBBD1', 1, 1, 1)
-INSERT [PQESH].[dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (2, N'节点2', N'监测点2', 2, 1, 1, 35000, N'DWAE1', 1, 1, 1)
-INSERT [PQESH].[dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (3, N'节点3', N'监测点3', 3, 2, 1, 35000, N'DBBD1', 1, 1, 1)
-INSERT [PQESH].[dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (4, N'节点4', N'监测点4', 4, 0, 1, 220, N'DBBD1', 1, 1, 1)
-INSERT [PQESH].[dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (5, N'节点5', N'监测点5', 5, 1, 1, 380, N'DWAE1', 1, 1, 1)
-INSERT [PQESH].[dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (6, N'节点6', N'监测点6', 6, 1, 1, 380, N'DBBD1', 1, 1, 1)
-INSERT [PQESH].[dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (7, N'节点7', N'监测点7', 7, 0, 1, 12, N'DWAE1', 1, 1, 1)
-INSERT [PQESH].[dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (8, N'节点8', N'监测点8', 8, 0, 1, 24, N'DBBD1', 1, 1, 1)
-INSERT [PQESH].[dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (9, N'节点9', N'监测点9', 9, 2, 1, 36, N'DBBD1', 1, 1, 1)
-INSERT [PQESH].[dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (10, N'节点10', N'监测点10', 10, 0, 1, 110000, N'DBBD1', 1, 1, 1)
-INSERT [PQESH].[dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (11, N'节点11', N'监测点11', 11, 1, 1, 220, N'DBBD1', 1, 1, 1)
-INSERT [PQESH].[dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (12, N'节点12', N'监测点12', 12, 0, 1, 110000, N'DBBD1', 1, 1, 1)
-INSERT [PQESH].[dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (13, N'节点13', N'监测点13', 13, 1, 1, 320, N'DBBD1', 1, 1, 1)
-INSERT [PQESH].[dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (14, N'节点14', N'监测点14', 14, 2, 1, 220, N'DBBD1', 1, 1, 1)
-/****** Object:  Table [PQESH].[dbo].[Base_Data]    Script Date: 12/11/2019 12:18:50 ******/
-
+INSERT [dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (1, N'节点1', N'监测点1', 1, 0, 1, 220, N'TEST1', 1, 1, 1)
+INSERT [dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (2, N'节点2', N'监测点2', 2, 1, 1, 35000, N'TEST1', 1, 1, 1)
+INSERT [dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (3, N'节点3', N'监测点3', 3, 2, 1, 35000, N'TEST1', 1, 1, 1)
+INSERT [dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (4, N'节点4', N'监测点4', 4, 0, 1, 220, N'TEST1', 1, 1, 1)
+INSERT [dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (5, N'节点5', N'监测点5', 5, 1, 1, 380, N'TEST1', 1, 1, 1)
+INSERT [dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (6, N'节点6', N'监测点6', 6, 1, 1, 380, N'TEST1', 1, 1, 1)
+INSERT [dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (7, N'节点7', N'监测点7', 7, 0, 1, 36, N'TEST1', 1, 1, 1)
+INSERT [dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (8, N'节点8', N'监测点8', 8, 0, 1, 12, N'TEST1', 1, 1, 1)
+INSERT [dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (9, N'节点9', N'监测点9', 9, 2, 1, 36, N'TEST1', 1, 1, 1)
+INSERT [dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (10, N'节点10', N'监测点10', 10, 0, 1, 110000, N'TEST1', 1, 1, 1)
+INSERT [dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (11, N'节点11', N'监测点11', 11, 1, 1, 220, N'TEST1', 1, 1, 1)
+INSERT [dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (12, N'节点12', N'监测点12', 12, 0, 1, 110000, N'TEST1', 1, 1, 1)
+INSERT [dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (13, N'节点13', N'监测点13', 13, 1, 1, 380, N'TEST1', 1, 1, 1)
+INSERT [dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (14, N'节点14', N'监测点14', 14, 2, 1, 220, N'TEST1', 1, 1, 1)
+INSERT [dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (15, N'节点1', N'监测点15', 15, 1, 1, 110000, N'TEST1', 2, 1, 1)
+INSERT [dbo].[Site] ([id], [name], [description], [rank], [connectionTypeID], [nominalBaseV], [levelV], [unitcode], [stationID], [ShortCircuitCapacity], [tableID]) VALUES (16, N'节点2', N'监测点16', 16, 2, 1, 220, N'TEST1', 2, 1, 1)
+/****** Object:  ForeignKey [FK_Site_Station_id]    Script Date: 12/25/2019 16:20:43 ******/
 USE [PQESH]
 GO
 INSERT [PQESH].[dbo].[Base_Data] ([Site_id], [id], [V], [I]) VALUES (1, 1, 2.19691553155563, NULL)

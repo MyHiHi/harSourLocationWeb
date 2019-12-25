@@ -30,9 +30,19 @@ plsregress = Plsregress(IPCC, UPCC)
 corrcoef = Corrcoef(IPCC, UPCC)
 # Optics聚类算法的对象
 # optics是在运行 有序队列图 函数后才有值
-optics = None
+optic = None
 # 全局数据
 info = SET.INFO
+
+# 返回弹出框的html  ****废弃************
+
+
+class getRespDiv(View):
+    def get(self, request, *args, **kwargs):
+        return render_to_response('ResponsDiv.html')
+
+    def http_method_not_allowed(self, request, *args, **kwargs):
+        return HttpResponse('你使用的是%s请求，但是不支持get以外的其他请求！' % request.method)
 
 
 # 判断主谐波源位置
@@ -69,8 +79,8 @@ class GetSimpleAver(View):
             p = {**p_dev, **p_resp}
             # 分别是发射水平/责任均值
             # p= {'c_dev':i_z_mean,'s_dev':u_mean,'dc_mean':dc_mean,'ds_mean':ds_mean}
-            info.update(p)
-            return HttpResponse(info)
+            # info.update(p)
+            return HttpResponse(json.dumps({"res_p": p}))
         except Exception as e:
             print("错误：", e)
             return HttpResponse(None)
@@ -87,9 +97,7 @@ class GetDrawResp(View):
             p = plsregress.get_draw_resp()
             # 分别是发射水平/责任均值
             # p={"dc_resp":y1,"dc_len":x1,"ds_resp":y2,"ds_len":x2}
-
-            info.update(p)
-            return HttpResponse(info)
+            return HttpResponse(json.dumps({"draw_p": p}))
         except Exception as e:
             print("错误：", e)
             return HttpResponse(None)
@@ -102,25 +110,23 @@ class GetDrawResp(View):
 class GetOrderData(View):
     def get(self, request, *args, **kwargs):
         global corrcoef
-        global optics
+        global optic
         try:
             window = int(dict(request.GET).get("window", WINDOW))
-
             step = int(dict(request.GET).get("step", STEP))
-            params = int(dict(request.GET).get("params", PARAMS))
-
+            params = float(dict(request.GET).get("params", PARAMS))
             e = float(dict(request.GET).get("e", E))
             is_complex = IS_COMPLEX
             p = corrcoef.get_optics_data(window, step, params, is_complex)
             ipccn, upccn = p.get('ipccn'), p.get("upccn")
             # 这个时候的optics才有值
             optics = Optics(ipccn, upccn, e)
-            p = optics.get_ordered_data()
+            optic = Optics(ipccn, upccn, e)
+            p = optics.get_ordered_da()
             # print("********:",p)
             # 分别是可达距离、x值
             # p= {"reach_dis":y1,"times":x1}
-            info.update(p)
-            return HttpResponse(info)
+            return HttpResponse(json.dumps({"order_p": p}))
         except Exception as e:
             print("错误GetOrderData ：", e)
             return HttpResponse(None)
@@ -133,20 +139,23 @@ class GetOrderData(View):
 
 class GetThreeClusterData(View):
     def get(self, request, *args, **kwargs):
-        global optics
+        global optic
         try:
-            p = optics.get_three_section()
+            p = optic.get_three_section()
+            # print("*****:", p.get("pccn_1"))
             # ipccn_1是800个值的一维list
             ''' p= {'pccn_1': [ipccn_1, upccn_1],
                 'pccn_2': [ipccn_2, upccn_2],
                 'pccn_3': [ipccn_3, upccn_3],
                 }
             '''
-            info.update(p)
-            return HttpResponse(info)
+            print("^^^^^^^^:", p)
+            return HttpResponse(json.dumps({"three_p": p}))
         except Exception as e:
             print("错误：", e)
-            return HttpResponse(None)
+            return HttpResponse(None);
+        # finally:
+        #     return HttpResponse(json.dumps({"three_p": p}))
 
     def http_method_not_allowed(self, request, *args, **kwargs):
         return HttpResponse('你使用的是%s请求，但是不支持get以外的其他请求！' % request.method)
@@ -155,10 +164,13 @@ class GetThreeClusterData(View):
 # 获得复杂模式的三段的发射水平和责任(均值)
 class GetThreeDevResp(View):
     def get(self, request, *args, **kwargs):
-        global optics
+        global optic
+
         try:
-            resp = optics.get_three_section_responsibility_mean()
-            dev = optics.get_three_section_c_s_dev_mean()
+            resp = optic.get_three_section_responsibility_mean()
+            print("rrrr: ", resp)
+            dev = optic.get_three_section_c_s_dev_mean()
+            print("devvvv: ", dev)
             # 分别是责任和发射水平均值
             ''' resp={'pccn_1_resp_mean':{'dc_mean':dc_mean,'ds_mean':ds_mean} ,
                 'pccn_2_resp_mean':{'dc_mean':dc_mean,'ds_mean':ds_mean}, 
@@ -170,11 +182,14 @@ class GetThreeDevResp(View):
                 }
             '''
             p = {**resp, **dev}
-            info.update(p)
-            return HttpResponse(info)
+            print(p)
+
+            return HttpResponse(json.dumps({"tdev_p": p}))
         except Exception as e:
             print("错误：", e)
-            return HttpResponse(None)
+            # return HttpResponse(None)
+        finally:
+            return HttpResponse(json.dumps({"tdev_p": p}))
 
     def http_method_not_allowed(self, request, *args, **kwargs):
         return HttpResponse('你使用的是%s请求，但是不支持get以外的其他请求！' % request.method)

@@ -13,6 +13,7 @@ class Plsregress(object):
     def get_plsregress(self):
         try:
             ipcc,upcc=self.ipcc,self.upcc;
+            
             A = np.hstack([ipcc**0, ipcc**1]);
             sol, r, rank, s =la.lstsq(A,upcc);
         except Exception as e:

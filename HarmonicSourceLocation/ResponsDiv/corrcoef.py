@@ -26,7 +26,6 @@ class Corrcoef(object):
     '''
     def get_optics_data(self,window=100,step=1,params=0.85,is_complex=False):
         try:
-            
             ans_over=self.get_over_corrcoef_data(window,step, params);
             ip_le=len(ans_over)+window-1;
         except Exception as e:

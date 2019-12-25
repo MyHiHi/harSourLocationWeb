@@ -7,3 +7,5 @@ def singleton(cls):
         return _instance[cls]
 
     return _singleton
+
+

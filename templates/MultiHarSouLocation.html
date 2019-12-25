@@ -7,7 +7,19 @@
             <div class="card-header bg-light">
                 节点列表
             </div>
-
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <img src="./static/imgs/avatar-1.png" class="avatar avatar-sm" alt="logo">
+                        <span class="small ml-1 d-md-down-none" id="Station_Label">选择分析对象</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" id="station_menu">
+                        <a class="dropdown-item">
+                        </a>
+                    </div>
+                </li>
+            </ul>
             <div class="card-body">
                 <div class="table-responsive">
 
@@ -16,22 +28,17 @@
                         <button class="btn btn-rounded btn-danger" onclick="Show_high()">高电压</button>
                         <button class="btn btn-rounded btn-primary" onclick="Show_low()">低电压</button>
                         <button class="btn btn-rounded btn-success" onclick="Show_safe()">安全电压</button>
-
-                    </div>
-                    <div class="card-header bg-light">
-                        请选择一些监测点进行谐波源定位（一般大于估计谐波源数量）
-                        </diav>
                         <div class="card-body" id="data_table">
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th><input type="checkbox" class="i-checks" id="questionCheck" /></th>
-                                            <th>ID</th>
-                                            <th>Site_Name</th>
-                                            <th>Site_Description</th>
-                                            <th>LevelV</th>
-                                            <th>Unicode</th>
+                                            <th></th>
+                                            <!--<th>ID</th>-->
+                                            <th>监测点名称</th>
+                                            <th>监测点描述</th>
+                                            <th>电压等级</th>
+                                            <th>单位编码</th>
                                         </tr>
                                     </thead>
                                     <tbody id="Site_table">
@@ -41,7 +48,31 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-rounded btn-primary" onclick="">提交</button>
+                        <button class="btn btn-outline-primary" data-toggle="modal" data-target="#modal_multi_location"
+                            onclick="onSubmit()">选择观测信号提交并进行谐波源定位（一般大于估计谐波源数量）</button>
+                        <div class="modal fade" id="modal_multi_location" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-primary border-0">
+                                        <h5 class="modal-title text-white">谐波源定位结果为：</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                    <div id="location_div" class="modal-body">
+
+                                    </div>
+                                    <div class="modal-footer border-0">
+                                        <button type="button" class="btn btn-link" data-dismiss="modal">关闭</button>
+                                        <button class="btn btn-rounded btn-outline-danger" data-toggle="modal"
+                                            data-target="#modal-2">谐波责任划分</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
 
                     </div>
                 </div>
@@ -50,21 +81,40 @@
     </div>
 
     <script>
-        DATA_BASE = {{DATA_BASE | safe}};
-        HIGH_DATA_BASE = {{HIGH_DATA_BASE | safe}};
-        LOW_DATA_BASE = {{LOW_DATA_BASE | safe}};
-        SAFE_DATA_BASE = {{SAFE_DATA_BASE | safe}};
-        Set_site_table(DATA_BASE);
+        data_pcs();
+        function data_pcs() {
+            DATA_BASE = {{DATA_BASE | safe}};
+            HIGH_DATA_BASE = {{HIGH_DATA_BASE | safe}};
+            LOW_DATA_BASE = {{LOW_DATA_BASE | safe}};
+            SAFE_DATA_BASE = {{SAFE_DATA_BASE | safe}};
+            STATION = {{STATION | safe}};
+
+            Set_site_table(DATA_BASE);
+            Set_station();
+        }
+
+        function data_pros(res) {
+            res = $.parseJSON(res);
+            DATA_BASE = res.DATA_BASE;
+            HIGH_DATA_BASE = res.HIGH_DATA_BASE;
+            LOW_DATA_BASE = res.LOW_DATA_BASE;
+            SAFE_DATA_BASE = res.SAFE_DATA_BASE;
+            STATION = res.STATION;
+            Set_site_table(DATA_BASE)
+            Set_station();
+        }
+
         function Set_site_table(df) {
             s = "";
             df.forEach((r) => {
-                s += "<tr><td><div align='center'><input type='checkbox' name='id' value='1'></div></td><td>" +
-                    r.id + "</td><td class='text-nowrap'>" + r.name + "</td><td>" + r.description +
-                    "</td><td>" + r.levelV + "</td><td>" + r.unitcode + "</td></tr>"
+                s += "<tr><td><div align='center'><input type='checkbox' name='id' value='" + r.id +
+                    "'></div></td><td class='text-nowrap'>" + r.name + "</td><td>" + r.description +
+                    "</td><td>" + r.levelV + "V</td><td>" + r.unitcode + "</td></tr>"
             })
 
             $('#Site_table').html(s);
         }
+
         function Show_all() {
             Set_site_table(DATA_BASE);
         }
@@ -79,6 +129,57 @@
 
         function Show_safe() {
             Set_site_table(SAFE_DATA_BASE);
+        }
+
+        function Set_station() {
+            var station_html = "";
+            for (i = 0; i < STATION.length; i++) {
+                station_html += "<a class='dropdown-item' value='" + STATION[i] +
+                    "' onclick='stationSelect(this)'><i class='fa fa-user'></i>" + STATION[i] + "</a>";
+            }
+            $("#station_menu").html(station_html);
+        }
+
+        function stationSelect(self) {
+            c = self.innerText
+            $.get(
+                "Stationpost/", {
+                    station: JSON.stringify(c)
+                },
+                function (data) {
+                    $("#Station_Label").html(c);
+
+                    data_pros(data);
+                }
+            );
+        }
+        onSubmit = () => {
+            var boxes = document.getElementsByTagName("input");
+            var val = [];
+            for (i = 0; i < boxes.length; i++) {
+                if (boxes[i].name == "id" && boxes[i].checked == true) {
+                    val.push(boxes[i].value);
+                }
+            }
+            if (val.length > 1) {
+                var hsl = "";
+                $.get(
+                    "Sitepost/", {
+                        site: JSON.stringify(val)
+                    },
+                    function (data) {
+                        Result = $.parseJSON(data);
+                        for (i = 0; i < Result.LOCATION.length; i++) {
+                            hsl += "<input type='radio' name='harsource' value=''>" + Result.LOCATION[i] +
+                                "号监测点</br>";
+                        }
+                        $("#location_div").html(hsl);
+                    }
+                );
+            } else {
+                alert("请多选择一些节点提交！");
+                window.history.back();
+            }
         }
     </script>
     {% endblock %}

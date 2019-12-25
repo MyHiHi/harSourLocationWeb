@@ -53,3 +53,23 @@ class BaseData(models.Model):
 
         verbose_name_plural = u"基础数据表"
     primary = ('site', 'id')
+
+
+# class MyI(models.Model):
+#     id = models.IntegerField(primary_key=True)
+#     # Field name made lowercase.
+#     i = models.CharField(max_length=40, db_column='I', blank=True, null=True)
+
+#     class Meta:
+#         db_table = 'MyI'
+
+class Station(models.Model):
+    stationid = models.IntegerField(db_column='StationID', primary_key=True)  #Field name made lowercase.
+    stationname = models.CharField(db_column='StationName', max_length=200)  # Field name made lowercase.
+    manager = models.CharField(db_column='Manager', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    address = models.CharField(db_column='Address', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    telphone = models.CharField(db_column='TelPhone', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    descript = models.CharField(db_column='Descript', max_length=200, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        db_table = 'Station'
