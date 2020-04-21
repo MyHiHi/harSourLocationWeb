@@ -25,7 +25,7 @@ SECRET_KEY = '!gw3&@ccy8-cy-2vkf&tiusu#$4gwmz=o4^vxzy-p_qwve&mz9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['30949au614.qicp.vip']
 
 
 # Application definition

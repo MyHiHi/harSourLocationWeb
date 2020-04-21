@@ -19,8 +19,9 @@ WINDOW, STEP, PARAMS, E = SET.WINDOW, SET.STEP, SET.PARAMS, SET.E
 # 当前数据是否为复数
 IS_COMPLEX = SET.IS_COMPLEX
 # *********测试部分*********
-excel = Excel("D:\Documents\我的代码\谐波源项目\web\Location\HarmonicSourceLocation\ResponsDiv\excel\\2-2-2更新IPCC.xls",
-              "D:\Documents\我的代码\谐波源项目\web\Location\HarmonicSourceLocation\ResponsDiv\excel\\2-2-2更新UPCC.xls")
+base = os.path.dirname(__file__)
+excel = Excel(os.path.join(base, "ResponsDiv\excel\\2-2-2更新IPCC.xls"),
+              os.path.join(base, "ResponsDiv\excel\\2-2-2更新UPCC.xls"))
 data = excel.read()
 IPCC, UPCC = data.get("ipcc"), data.get("upcc")
 # ******************
@@ -153,7 +154,7 @@ class GetThreeClusterData(View):
             return HttpResponse(json.dumps({"three_p": p}))
         except Exception as e:
             print("错误：", e)
-            return HttpResponse(None);
+            return HttpResponse(None)
         # finally:
         #     return HttpResponse(json.dumps({"three_p": p}))
 

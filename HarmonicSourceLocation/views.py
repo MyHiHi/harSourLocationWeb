@@ -1,9 +1,10 @@
 # coding:utf-8
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, JsonResponse
+from django.views.generic import View
 import json
 import numpy as np
-from django.views.generic import View
+
 from django.conf import settings as SET
 from .models import Site, BaseData,Station
 from django.db.models import F
@@ -60,8 +61,6 @@ class Index(View):
         return HttpResponse('你使用的是%s请求，但是不支持get以外的其他请求！' % request.method)
 
 # 矩阵转化页
-
-
 class Topo2Matrix(View):
     def get(self, request, *args, **kwargs):
         info.update({'page_name': TOPO2MATRIX["name"]})
